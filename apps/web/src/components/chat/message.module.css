@@ -1,0 +1,345 @@
+/* Message bubbles, status ticks, and inline media (image/video/file/audio).
+   Tokens only (var(--fw-*)); px for one-off layout. */
+
+.row {
+  display: flex;
+  width: 100%;
+  margin-top: 1px;
+}
+
+.rowOut {
+  justify-content: flex-end;
+}
+
+.rowIn {
+  justify-content: flex-start;
+}
+
+/* First bubble of a same-direction run gets a little more breathing room. */
+.rowStart {
+  margin-top: var(--fw-sp-2);
+}
+
+.bubble {
+  position: relative;
+  max-width: 82%;
+  min-width: 0;
+  border-radius: var(--fw-radius-lg);
+  padding: var(--fw-sp-2) var(--fw-sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-1);
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 900px) {
+  .bubble {
+    max-width: 66%;
+  }
+}
+
+.bubbleOut {
+  background: var(--fw-bubble-out);
+  color: var(--fw-bubble-out-ink);
+  border-bottom-right-radius: var(--fw-radius-sm);
+}
+
+.bubbleIn {
+  background: var(--fw-bubble-in);
+  color: var(--fw-bubble-in-ink);
+  border: 1px solid var(--fw-border);
+  border-bottom-left-radius: var(--fw-radius-sm);
+}
+
+/* Media bubbles hug their content with a tighter frame. */
+.bubbleMedia {
+  padding: var(--fw-sp-1);
+  gap: var(--fw-sp-1);
+}
+
+.text {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.42;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: inherit;
+  color: inherit;
+}
+
+/* --------------------------------------------------------------- meta row */
+
+.meta {
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.6;
+  user-select: none;
+}
+
+.metaOnMedia {
+  align-self: flex-end;
+  margin: 0 var(--fw-sp-1) var(--fw-sp-1);
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}
+
+.ticks {
+  display: inline-flex;
+  align-items: center;
+  opacity: 1;
+}
+
+.ticksRead {
+  color: var(--fw-accent);
+}
+
+.ticksError {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--fw-danger);
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------- image/video */
+
+.mediaFrame {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: var(--fw-surface);
+  border-radius: var(--fw-radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  max-width: 260px;
+  line-height: 0;
+}
+
+.mediaFrame:disabled {
+  cursor: default;
+}
+
+.mediaImg {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  max-height: 320px;
+  min-width: 140px;
+  object-fit: cover;
+  border-radius: var(--fw-radius-md);
+  background: var(--fw-surface);
+}
+
+.mediaImgBlur {
+  filter: blur(12px);
+  transform: scale(1.05);
+}
+
+.playOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.playBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--fw-radius-full);
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+}
+
+/* Download / pending overlay shown over an undownloaded preview. */
+.dlOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dlChip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fw-sp-1);
+  min-height: 34px;
+  padding: 0 var(--fw-sp-3);
+  border-radius: var(--fw-radius-full);
+  border: 1px solid var(--fw-border-strong);
+  background: var(--fw-surface-elevated);
+  color: var(--fw-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dlChip:hover {
+  background: var(--fw-surface-hover);
+}
+
+/* -------------------------------------------------------------- file card */
+
+.fileCard {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  min-width: 0;
+  min-width: 200px;
+  padding: var(--fw-sp-1);
+}
+
+.fileIcon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--fw-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fw-accent-ink);
+  background: var(--fw-accent-soft);
+}
+
+.fileInfo {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fileName {
+  font-size: 13px;
+  font-weight: 600;
+  color: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.fileSize {
+  font-size: 11px;
+  color: inherit;
+  opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
+
+.fileAction {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--fw-radius-full);
+  border: 1px solid var(--fw-border);
+  background: var(--fw-surface);
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.fileAction:hover {
+  background: var(--fw-surface-hover);
+}
+
+/* ------------------------------------------------------------ audio note */
+
+.audio {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  min-width: 200px;
+  padding: var(--fw-sp-1);
+}
+
+.audioBtn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--fw-radius-full);
+  border: 0;
+  background: var(--fw-accent);
+  color: var(--fw-accent-ink);
+  cursor: pointer;
+}
+
+.audioBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.audioMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.seek {
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--fw-accent);
+}
+
+.seek:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.audioTime {
+  font-size: 11px;
+  color: inherit;
+  opacity: 0.65;
+  font-variant-numeric: tabular-nums;
+}
+
+.audioFail {
+  font-size: 12px;
+  color: var(--fw-text-faint);
+}
+
+/* -------------------------------------------------------------- spinner */
+
+.inlineSpinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: fwSpin 0.7s linear infinite;
+}
+
+@keyframes fwSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inlineSpinner {
+    animation-duration: 1.4s;
+  }
+}

@@ -1,0 +1,260 @@
+/*
+ * FUCK WHATSAPP design tokens — single source of truth.
+ * Self-contained: system fonts only, zero remote assets.
+ * Dark-first; light is a full theme. Theme resolves from prefers-color-scheme
+ * and can be pinned via :root[data-theme="dark|light"] (Settings → Appearance).
+ *
+ * New tokens are named --fw-*. Legacy aliases (--bg, --accent, …) are mapped to
+ * them at the bottom so any not-yet-migrated rule keeps working.
+ */
+
+:root {
+  color-scheme: dark light;
+
+  /* type — system stack, Inter first when locally present, no network fonts */
+  --fw-font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fw-font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  --fw-font-scale: 1; /* Settings → Appearance text size */
+
+  /* spacing */
+  --fw-sp-1: 4px;
+  --fw-sp-2: 8px;
+  --fw-sp-3: 12px;
+  --fw-sp-4: 16px;
+  --fw-sp-5: 20px;
+  --fw-sp-6: 24px;
+  --fw-sp-7: 32px;
+
+  /* radius */
+  --fw-radius-sm: 8px;
+  --fw-radius-md: 14px;
+  --fw-radius-lg: 20px;
+  --fw-radius-xl: 28px;
+  --fw-radius-full: 999px;
+
+  /* touch / layout */
+  --fw-touch: 44px;
+  --fw-sidebar-w: clamp(300px, 30vw, 400px);
+  --fw-content-max: 760px;
+  --fw-page-max: 680px;
+
+  /* z-index scale */
+  --fw-z-nav: 10;
+  --fw-z-sticky: 20;
+  --fw-z-fab: 30;
+  --fw-z-sheet: 40;
+  --fw-z-modal: 50;
+  --fw-z-toast: 60;
+
+  /* motion */
+  --fw-dur-fast: 120ms;
+  --fw-dur: 180ms;
+  --fw-dur-slow: 220ms;
+  --fw-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- dark theme (default) ---- */
+  --fw-bg: #090909;
+  --fw-surface: #111111;
+  --fw-surface-elevated: #181818;
+  --fw-surface-hover: #1e1e1e;
+  --fw-text-primary: #f5f5f5;
+  --fw-text-secondary: #969696;
+  --fw-text-faint: #5e5e5e;
+  --fw-border: #272727;
+  --fw-border-strong: #363636;
+
+  --fw-accent: #b8ff3d;
+  --fw-accent-hover: #c8ff5e;
+  --fw-accent-ink: #0a0a0a;
+  --fw-accent-soft: rgba(184, 255, 61, 0.14);
+
+  --fw-bubble-out: #17240a;
+  --fw-bubble-out-ink: #eaf7d4;
+  --fw-bubble-in: #181818;
+  --fw-bubble-in-ink: #f5f5f5;
+
+  --fw-danger: #ff5a5a;
+  --fw-danger-soft: rgba(255, 90, 90, 0.14);
+  --fw-security: #3dd7a6;
+  --fw-warn: #e0b23c;
+
+  --fw-shadow-sheet: 0 -8px 40px rgba(0, 0, 0, 0.55);
+  --fw-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --fw-shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --fw-scrim: rgba(0, 0, 0, 0.62);
+
+  --fw-focus: 0 0 0 2px var(--fw-bg), 0 0 0 4px var(--fw-accent);
+}
+
+/* light theme via system preference … */
+@media (prefers-color-scheme: light) {
+  :root {
+    --fw-bg: #f5f5f2;
+    --fw-surface: #ffffff;
+    --fw-surface-elevated: #ececE8;
+    --fw-surface-hover: #e4e4de;
+    --fw-text-primary: #111111;
+    --fw-text-secondary: #717171;
+    --fw-text-faint: #9a9a96;
+    --fw-border: #dededa;
+    --fw-border-strong: #cbcbc4;
+
+    --fw-accent: #5b8a00;
+    --fw-accent-hover: #4c7500;
+    --fw-accent-ink: #ffffff;
+    --fw-accent-soft: rgba(91, 138, 0, 0.12);
+
+    --fw-bubble-out: #e4f7c4;
+    --fw-bubble-out-ink: #1b2a00;
+    --fw-bubble-in: #ffffff;
+    --fw-bubble-in-ink: #111111;
+
+    --fw-danger: #d02525;
+    --fw-danger-soft: rgba(208, 37, 37, 0.1);
+    --fw-security: #0f9d6b;
+    --fw-warn: #9a6700;
+
+    --fw-shadow-sheet: 0 -8px 40px rgba(0, 0, 0, 0.16);
+    --fw-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.16);
+    --fw-shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.16);
+    --fw-scrim: rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* … and explicit override (Settings → Appearance) wins in BOTH directions. */
+:root[data-theme='dark'] {
+  --fw-bg: #090909;
+  --fw-surface: #111111;
+  --fw-surface-elevated: #181818;
+  --fw-surface-hover: #1e1e1e;
+  --fw-text-primary: #f5f5f5;
+  --fw-text-secondary: #969696;
+  --fw-text-faint: #5e5e5e;
+  --fw-border: #272727;
+  --fw-border-strong: #363636;
+  --fw-accent: #b8ff3d;
+  --fw-accent-hover: #c8ff5e;
+  --fw-accent-ink: #0a0a0a;
+  --fw-accent-soft: rgba(184, 255, 61, 0.14);
+  --fw-bubble-out: #17240a;
+  --fw-bubble-out-ink: #eaf7d4;
+  --fw-bubble-in: #181818;
+  --fw-bubble-in-ink: #f5f5f5;
+  --fw-danger: #ff5a5a;
+  --fw-danger-soft: rgba(255, 90, 90, 0.14);
+  --fw-security: #3dd7a6;
+  --fw-warn: #e0b23c;
+  --fw-shadow-sheet: 0 -8px 40px rgba(0, 0, 0, 0.55);
+  --fw-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --fw-shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --fw-scrim: rgba(0, 0, 0, 0.62);
+}
+
+:root[data-theme='light'] {
+  --fw-bg: #f5f5f2;
+  --fw-surface: #ffffff;
+  --fw-surface-elevated: #ececE8;
+  --fw-surface-hover: #e4e4de;
+  --fw-text-primary: #111111;
+  --fw-text-secondary: #717171;
+  --fw-text-faint: #9a9a96;
+  --fw-border: #dededa;
+  --fw-border-strong: #cbcbc4;
+  --fw-accent: #5b8a00;
+  --fw-accent-hover: #4c7500;
+  --fw-accent-ink: #ffffff;
+  --fw-accent-soft: rgba(91, 138, 0, 0.12);
+  --fw-bubble-out: #e4f7c4;
+  --fw-bubble-out-ink: #1b2a00;
+  --fw-bubble-in: #ffffff;
+  --fw-bubble-in-ink: #111111;
+  --fw-danger: #d02525;
+  --fw-danger-soft: rgba(208, 37, 37, 0.1);
+  --fw-security: #0f9d6b;
+  --fw-warn: #9a6700;
+  --fw-shadow-sheet: 0 -8px 40px rgba(0, 0, 0, 0.16);
+  --fw-shadow-menu: 0 12px 32px rgba(0, 0, 0, 0.16);
+  --fw-shadow-fab: 0 6px 20px rgba(0, 0, 0, 0.16);
+  --fw-scrim: rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --fw-border: #3a3a3a;
+    --fw-text-secondary: #b0b0b0;
+  }
+}
+
+/* ---- legacy aliases: keep pre-redesign rules working during migration ---- */
+:root {
+  --font-sans: var(--fw-font-sans);
+  --font-mono: var(--fw-font-mono);
+  --sp-1: var(--fw-sp-1);
+  --sp-2: var(--fw-sp-2);
+  --sp-3: var(--fw-sp-3);
+  --sp-4: var(--fw-sp-4);
+  --sp-5: var(--fw-sp-6);
+  --sp-6: var(--fw-sp-7);
+  --r-sm: var(--fw-radius-sm);
+  --r-md: var(--fw-radius-md);
+  --r-lg: var(--fw-radius-lg);
+  --r-full: var(--fw-radius-full);
+  --touch-target: var(--fw-touch);
+  --bg: var(--fw-bg);
+  --bg-raised: var(--fw-surface);
+  --bg-sunken: var(--fw-bg);
+  --bg-hover: var(--fw-surface-hover);
+  --border: var(--fw-border);
+  --text: var(--fw-text-primary);
+  --text-dim: var(--fw-text-secondary);
+  --text-faint: var(--fw-text-faint);
+  --accent: var(--fw-accent);
+  --accent-hover: var(--fw-accent-hover);
+  --accent-text: var(--fw-accent-ink);
+  --ok: var(--fw-security);
+  --warn: var(--fw-warn);
+  --danger: var(--fw-danger);
+  --bubble-out: var(--fw-bubble-out);
+  --bubble-in: var(--fw-bubble-in);
+  --focus-ring: var(--fw-focus);
+}
+
+/* base reset */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--fw-bg);
+  color: var(--fw-text-primary);
+  font-family: var(--fw-font-sans);
+  font-size: calc(16px * var(--fw-font-scale));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+#root {
+  height: 100%;
+}
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--fw-focus);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

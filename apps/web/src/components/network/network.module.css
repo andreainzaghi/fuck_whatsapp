@@ -1,0 +1,319 @@
+/* Network view — operator cards, server rows, advanced panel, Tor note. */
+
+.title {
+  margin: 0 0 var(--fw-sp-2);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  margin: 0 0 var(--fw-sp-5);
+  color: var(--fw-text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 58ch;
+}
+
+.emptyNote {
+  margin: var(--fw-sp-4) 0;
+  padding: var(--fw-sp-5);
+  border: 1px dashed var(--fw-border-strong);
+  border-radius: var(--fw-radius-md);
+  color: var(--fw-text-faint);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------- cards ---- */
+
+.card {
+  background: var(--fw-surface);
+  border: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-lg);
+  padding: var(--fw-sp-5);
+  margin-bottom: var(--fw-sp-4);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fw-sp-3);
+  flex-wrap: wrap;
+}
+
+.opName {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.roleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fw-sp-1);
+  margin-top: var(--fw-sp-3);
+}
+
+.roleChip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px 9px;
+  border-radius: var(--fw-radius-full);
+  border: 1px solid var(--fw-border);
+  color: var(--fw-text-secondary);
+  background: var(--fw-surface-elevated);
+}
+
+.groupTitle {
+  margin: var(--fw-sp-5) 0 var(--fw-sp-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fw-text-faint);
+}
+
+/* -------------------------------------------------------- server rows --- */
+
+.serverList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-md);
+  overflow: hidden;
+  background: var(--fw-bg);
+}
+
+.serverItem {
+  border-bottom: 1px solid var(--fw-border);
+}
+
+.serverItem:last-child {
+  border-bottom: 0;
+}
+
+.serverRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--fw-sp-2);
+  width: 100%;
+  min-height: var(--fw-touch);
+  padding: var(--fw-sp-3);
+  border: 0;
+  background: none;
+  color: var(--fw-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--fw-dur-fast) var(--fw-ease);
+}
+
+.serverRow:hover {
+  background: var(--fw-surface-hover);
+}
+
+.uri {
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: var(--fw-text-primary);
+}
+
+.uriFull {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fw-sp-1);
+}
+
+.miniBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: var(--fw-radius-full);
+  border: 1px solid var(--fw-border);
+  color: var(--fw-text-secondary);
+  background: var(--fw-surface-elevated);
+}
+
+.badgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--fw-radius-full);
+  background: currentColor;
+}
+
+.badgeOn {
+  color: var(--fw-security);
+  border-color: color-mix(in srgb, var(--fw-security) 34%, var(--fw-border));
+  background: color-mix(in srgb, var(--fw-security) 8%, transparent);
+}
+
+.badgeOff {
+  color: var(--fw-danger);
+  border-color: color-mix(in srgb, var(--fw-danger) 34%, var(--fw-border));
+  background: color-mix(in srgb, var(--fw-danger) 8%, transparent);
+}
+
+.badgeOnion {
+  color: var(--fw-warn);
+  border-color: color-mix(in srgb, var(--fw-warn) 34%, var(--fw-border));
+  background: color-mix(in srgb, var(--fw-warn) 8%, transparent);
+}
+
+/* ---------------------------------------------------------- advanced ---- */
+
+.advToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fw-sp-3);
+  width: 100%;
+  min-height: var(--fw-touch);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fw-text-primary);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+}
+
+.advToggleText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.advToggleSub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fw-text-faint);
+}
+
+.advChevron {
+  flex: none;
+  color: var(--fw-text-faint);
+  transition: transform var(--fw-dur) var(--fw-ease);
+}
+
+.advChevronOpen {
+  transform: rotate(90deg);
+}
+
+.advBody {
+  margin-top: var(--fw-sp-4);
+}
+
+.advHint {
+  margin: 0 0 var(--fw-sp-3);
+  color: var(--fw-text-faint);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.jsonArea {
+  width: 100%;
+  min-height: 220px;
+  padding: var(--fw-sp-3);
+  border: 1px solid var(--fw-border-strong);
+  border-radius: var(--fw-radius-md);
+  background: var(--fw-bg);
+  color: var(--fw-text-primary);
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.jsonArea:focus {
+  border-color: var(--fw-accent);
+  outline: none;
+}
+
+.btnRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  margin-top: var(--fw-sp-3);
+}
+
+.resultPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: var(--fw-radius-full);
+  border: 1px solid var(--fw-border);
+  background: var(--fw-surface-elevated);
+  font-family: var(--fw-font-mono);
+}
+
+.resultOk {
+  color: var(--fw-security);
+  border-color: color-mix(in srgb, var(--fw-security) 34%, var(--fw-border));
+}
+
+.resultErr {
+  color: var(--fw-danger);
+  border-color: color-mix(in srgb, var(--fw-danger) 34%, var(--fw-border));
+}
+
+/* ---------------------------------------------------------- tor note ---- */
+
+.noteHead {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  margin-bottom: var(--fw-sp-2);
+}
+
+.noteIcon {
+  display: inline-flex;
+  color: var(--fw-text-secondary);
+}
+
+.noteTitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.noteBody {
+  margin: 0;
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.noteMono {
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: var(--fw-radius-sm);
+  border: 1px solid var(--fw-border);
+  background: var(--fw-surface-elevated);
+  color: var(--fw-text-primary);
+  white-space: nowrap;
+}

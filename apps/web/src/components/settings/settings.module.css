@@ -1,0 +1,331 @@
+/* Settings view — section cards, profile, appearance, doc rows, danger zone. */
+
+.title {
+  margin: 0 0 var(--fw-sp-5);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------- section card -- */
+
+.card {
+  background: var(--fw-surface);
+  border: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-lg);
+  padding: var(--fw-sp-5);
+  margin-bottom: var(--fw-sp-4);
+}
+
+.cardDanger {
+  border-color: color-mix(in srgb, var(--fw-danger) 40%, var(--fw-border));
+  background: color-mix(in srgb, var(--fw-danger) 4%, var(--fw-surface));
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  margin-bottom: var(--fw-sp-4);
+}
+
+.cardIcon {
+  display: inline-flex;
+  color: var(--fw-text-secondary);
+}
+
+.cardIconDanger {
+  color: var(--fw-danger);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fw-text-faint);
+}
+
+.cardTitleDanger {
+  color: var(--fw-danger);
+}
+
+/* ------------------------------------------------------------- profile -- */
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-4);
+  margin-bottom: var(--fw-sp-4);
+}
+
+.profileName {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.profileSub {
+  margin-top: 2px;
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+  color: var(--fw-text-secondary);
+}
+
+/* ------------------------------------------------------------ info rows -- */
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fw-sp-3);
+  min-height: var(--fw-touch);
+  padding: var(--fw-sp-1) 0;
+  border-bottom: 1px solid var(--fw-border);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.rowLabel {
+  flex: none;
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+}
+
+.rowValue {
+  font-size: 14px;
+  text-align: right;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+.mono {
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+}
+
+/* --------------------------------------------------------- nav link row -- */
+
+.linkRow {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-3);
+  width: 100%;
+  min-height: var(--fw-touch);
+  padding: var(--fw-sp-2) 0;
+  color: var(--fw-text-primary);
+  text-decoration: none;
+  border-radius: var(--fw-radius-sm);
+}
+
+.linkRow:hover {
+  color: var(--fw-accent);
+}
+
+.linkIcon {
+  display: inline-flex;
+  color: var(--fw-text-secondary);
+}
+
+.linkRow:hover .linkIcon {
+  color: var(--fw-accent);
+}
+
+.linkText {
+  flex: 1;
+  min-width: 0;
+}
+
+.linkTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.linkSub {
+  margin-top: 1px;
+  font-size: 12px;
+  color: var(--fw-text-secondary);
+}
+
+.linkChevron {
+  flex: none;
+  color: var(--fw-text-faint);
+}
+
+/* ---------------------------------------------------------- appearance -- */
+
+.settingBlock {
+  margin-bottom: var(--fw-sp-5);
+}
+
+.settingBlock:last-child {
+  margin-bottom: 0;
+}
+
+.settingLabel {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fw-text-secondary);
+  margin-bottom: var(--fw-sp-2);
+}
+
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--fw-radius-md);
+  border: 1px solid var(--fw-border);
+  background: var(--fw-bg);
+}
+
+.segment {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 var(--fw-sp-2);
+  border: 0;
+  border-radius: var(--fw-radius-sm);
+  background: none;
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fw-dur-fast) var(--fw-ease), color var(--fw-dur-fast) var(--fw-ease);
+}
+
+.segment:hover:not(.segmentActive) {
+  background: var(--fw-surface-hover);
+  color: var(--fw-text-primary);
+}
+
+.segmentActive {
+  background: var(--fw-accent);
+  color: var(--fw-accent-ink);
+}
+
+.segment svg {
+  display: block;
+}
+
+.segmentA {
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- security -- */
+
+.securityWrap {
+  margin-bottom: var(--fw-sp-4);
+}
+
+.bullets {
+  margin: var(--fw-sp-3) 0 0;
+  padding-left: 1.25em;
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.bullets li {
+  margin-bottom: var(--fw-sp-1);
+}
+
+.bullets li::marker {
+  color: var(--fw-security);
+}
+
+/* ------------------------------------------------------------- doc rows -- */
+
+.docsHint {
+  margin: var(--fw-sp-4) 0 var(--fw-sp-1);
+  color: var(--fw-text-faint);
+  font-size: 12px;
+}
+
+.docRow {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-3);
+  min-height: var(--fw-touch);
+  padding: var(--fw-sp-2) 0;
+  border-bottom: 1px solid var(--fw-border);
+}
+
+.docRow:last-child {
+  border-bottom: 0;
+}
+
+.docIcon {
+  display: inline-flex;
+  color: var(--fw-text-faint);
+}
+
+.docText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.docTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fw-text-primary);
+}
+
+.docPath {
+  font-family: var(--fw-font-mono);
+  font-size: 12px;
+  color: var(--fw-text-faint);
+  overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------------------------- about/body -- */
+
+.aboutHead {
+  margin-bottom: var(--fw-sp-3);
+}
+
+.provisional {
+  margin: var(--fw-sp-2) 0 0;
+  font-size: 12px;
+  color: var(--fw-text-faint);
+}
+
+.body {
+  margin: 0 0 var(--fw-sp-2);
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.body:last-child {
+  margin-bottom: 0;
+}
+
+.noTrack {
+  margin: var(--fw-sp-3) 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fw-text-primary);
+}
+
+.subTitle {
+  margin: var(--fw-sp-4) 0 var(--fw-sp-1);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fw-text-primary);
+}
+
+/* ----------------------------------------------------------- danger zone -- */
+
+.dangerActions {
+  margin-top: var(--fw-sp-4);
+}

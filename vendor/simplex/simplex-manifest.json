@@ -1,0 +1,67 @@
+{
+  "$comment": "Pinned SimpleX Chat CLI release used by Fuck WhatsApp. Downloaded and SHA-256-verified at build time (scripts/verify-simplex.mjs). Never edited automatically — see scripts/update-simplex-manifest.mjs (requires --confirm).",
+  "version": "6.5.6",
+  "binaryReportsVersion": "6.5.6.1",
+  "sourceRepository": "https://github.com/simplex-chat/simplex-chat",
+  "releaseTag": "v6.5.6",
+  "releasePage": "https://github.com/simplex-chat/simplex-chat/releases/tag/v6.5.6",
+  "signedChecksums": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/_sha256sums",
+  "signedChecksumsSignature": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/_sha256sums.asc",
+  "license": "AGPL-3.0",
+  "platforms": {
+    "darwin-arm64": {
+      "asset": "simplex-chat-macos-aarch64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-macos-aarch64",
+      "sha256": "06eedfcad8cbf31abb2c13892592a1a532c4043c4954be645dfe8a1447ee9066",
+      "size": 169294112,
+      "provenance": "tofu-computed",
+      "runtimeDeps": ["openssl@3.0 (libcrypto.3.dylib, libssl.3.dylib) — bundled into the macOS package"],
+      "supported": true,
+      "locallyVerified": true
+    },
+    "darwin-x64": {
+      "asset": "simplex-chat-macos-x86-64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-macos-x86-64",
+      "sha256": "053789ca2e08bb741e318c5d3ebcb4843b6e6b128d174cb52ce00a58ce7c221f",
+      "size": 79622792,
+      "provenance": "tofu-computed",
+      "runtimeDeps": ["openssl@3.0 — bundled into the macOS package"],
+      "supported": true,
+      "locallyVerified": false
+    },
+    "windows-x64": {
+      "asset": "simplex-chat-windows-x86-64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-windows-x86-64",
+      "sha256": "6d6466ce74e048c9391fa1ce0fcbb7812ee9ba53a8eaa5890659d33cdfb97d75",
+      "size": 136907776,
+      "provenance": "tofu-computed",
+      "runtimeDeps": [],
+      "supported": true,
+      "locallyVerified": false
+    },
+    "linux-x64": {
+      "asset": "simplex-chat-ubuntu-24_04-x86_64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-24_04-x86_64",
+      "sha256": "0aec0a1ebd35ec3dfbb9f969f5d58e4269c8eca236f5be096780b9465dda2dbe",
+      "size": 77241368,
+      "provenance": "official-signed-sha256sums",
+      "runtimeDeps": ["glibc (Ubuntu 24.04 build)"],
+      "supported": true,
+      "locallyVerified": false
+    },
+    "linux-arm64": {
+      "asset": "simplex-chat-ubuntu-24_04-aarch64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-24_04-aarch64",
+      "sha256": "b15166d89f9e964b425f451db81e4c07dce681a304255e92ee3deab5e211a410",
+      "size": 99940640,
+      "provenance": "tofu-computed",
+      "runtimeDeps": ["glibc (Ubuntu 24.04 build)"],
+      "supported": true,
+      "locallyVerified": false
+    }
+  },
+  "provenanceNotes": {
+    "official-signed-sha256sums": "SHA-256 taken from the SimpleX project's signed _sha256sums release asset.",
+    "tofu-computed": "SHA-256 computed by this project from the official GitHub release asset over TLS (trust-on-first-use). SimpleX does not publish signed checksums for macOS/Windows/aarch64 assets — see docs/KNOWN_LIMITATIONS.md. Independently re-verify against the release page before trusting a build."
+  }
+}

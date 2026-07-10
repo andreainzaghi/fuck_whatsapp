@@ -1,0 +1,323 @@
+/*
+ * Onboarding & unlock — full-screen, mobile-first, dark-first.
+ * Uses @fwa/ui var(--fw-*) tokens only; no external assets, no hard-coded hex.
+ */
+
+.screen {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fw-sp-6);
+  overflow-y: auto;
+  background: var(--fw-bg);
+  padding-top: calc(var(--fw-sp-6) + env(safe-area-inset-top, 0px));
+  padding-right: calc(var(--fw-sp-4) + env(safe-area-inset-right, 0px));
+  padding-bottom: calc(var(--fw-sp-5) + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(var(--fw-sp-4) + env(safe-area-inset-left, 0px));
+}
+
+/* A single centered column that both the hero and the forms sit inside. */
+.column {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-5);
+}
+
+/* ============================================================ hero == */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fw-sp-5);
+  text-align: left;
+}
+
+.heroWordmark {
+  display: block;
+}
+
+.manifesto {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-1);
+}
+
+.manifestoLine {
+  font-size: clamp(22px, 6.5vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  color: var(--fw-text-primary);
+}
+
+.manifestoLine.accentLine {
+  color: var(--fw-accent);
+}
+
+.tagline {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--fw-text-secondary);
+  max-width: 32ch;
+}
+
+.heroCta {
+  width: 100%;
+  margin-top: var(--fw-sp-2);
+}
+
+/* ========================================================== forms == */
+
+.formShell {
+  width: 100%;
+  background: var(--fw-surface-elevated);
+  border: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-lg);
+  padding: var(--fw-sp-5);
+  box-shadow: var(--fw-shadow-sheet);
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-2);
+  margin-bottom: var(--fw-sp-5);
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fw-text-primary);
+}
+
+.formIntro {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fw-text-secondary);
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fw-sp-2);
+}
+
+.counter {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fw-text-faint);
+}
+
+/* -------------------------------------------------- password + toggle -- */
+
+.passwordWrap {
+  position: relative;
+}
+
+.passwordInput {
+  padding-right: 64px;
+}
+
+.toggleBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 56px;
+  min-height: var(--fw-touch);
+  border: 0;
+  background: none;
+  color: var(--fw-text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 0 var(--fw-radius-md) var(--fw-radius-md) 0;
+}
+
+.toggleBtn:hover {
+  color: var(--fw-text-primary);
+}
+
+.toggleBtn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* ------------------------------------------------------ strength hint -- */
+
+.meter {
+  display: flex;
+  gap: 4px;
+  margin-top: var(--fw-sp-2);
+}
+
+.seg {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-border);
+}
+
+.level1 .segOn {
+  background: var(--fw-danger);
+}
+
+.level2 .segOn {
+  background: var(--fw-warn);
+}
+
+.level3 .segOn,
+.level4 .segOn {
+  background: var(--fw-security);
+}
+
+.hint {
+  margin: var(--fw-sp-1) 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--fw-text-secondary);
+}
+
+/* ------------------------------------------------------- warning card -- */
+
+.warnCard {
+  border: 1px solid var(--fw-warn);
+  border-radius: var(--fw-radius-md);
+  padding: var(--fw-sp-3);
+  margin-bottom: var(--fw-sp-4);
+  background: var(--fw-surface);
+}
+
+.warnHead {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  margin: 0 0 var(--fw-sp-2);
+  color: var(--fw-warn);
+}
+
+.warnHeadText {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.warnText {
+  margin: 0 0 var(--fw-sp-3);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fw-text-primary);
+}
+
+.ackLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  min-height: var(--fw-touch);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fw-text-primary);
+}
+
+.ackLabel input {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  accent-color: var(--fw-accent);
+  cursor: pointer;
+}
+
+/* --------------------------------------------------- submit + status -- */
+
+.submitBtn {
+  width: 100%;
+  margin-top: var(--fw-sp-2);
+}
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  margin: var(--fw-sp-4) 0 0;
+  font-size: 12px;
+  color: var(--fw-text-faint);
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-text-faint);
+}
+
+/* ============================================================ footer == */
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  text-align: center;
+}
+
+.footerLine {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--fw-text-faint);
+}
+
+.footerSentence {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--fw-text-faint);
+  max-width: 40ch;
+}
+
+/* Center hero copy on wider viewports for a calmer, framed composition. */
+@media (min-width: 900px) {
+  .hero {
+    align-items: center;
+    text-align: center;
+  }
+
+  .tagline {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: fwFadeIn var(--fw-dur) var(--fw-ease);
+  }
+
+  @keyframes fwFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}

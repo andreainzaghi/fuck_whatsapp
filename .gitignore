@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+dist-pkg/
+*.tsbuildinfo
+
+# Release packaging — assembled locally / in CI, never committed
+Fuck-WhatsApp-*.zip
+Fuck-WhatsApp-*.tar.gz
+
+# Runtime data — NEVER commit: binaries, databases, keys, tokens, temp files
+runtime/*
+!runtime/.gitkeep
+
+# Two-user / packaging test data (ignored per task §17)
+runtime/test-user-a/
+runtime/test-user-b/
+runtime/smoke-package/
+
+# Vendored SimpleX binary (downloaded + verified at build time, never committed)
+vendor/simplex/bin/
+vendor/simplex/*.tmp
+
+# SimpleX databases and files (any location)
+*_chat.db
+*_agent.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Test artifacts
+coverage/
+playwright-report/
+test-results/
+tests/**/tmp/

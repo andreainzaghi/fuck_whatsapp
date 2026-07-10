@@ -1,0 +1,11 @@
+{
+  "name": "@fwa/ui",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "description": "FWA design tokens — plain CSS custom properties, no runtime, no remote assets.",
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  }
+}
