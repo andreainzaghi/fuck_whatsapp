@@ -1,0 +1,177 @@
+# Fuck WhatsApp — Build & Release
+#
+# UNOFFICIAL, independent open-source project. NOT affiliated with WhatsApp/Meta,
+# nor with SimpleX Chat. Messaging is powered by the official open-source SimpleX
+# Chat core (AGPL-3.0). This app implements ZERO cryptography and runs NO remote
+# backend.
+#
+# Builds the self-contained Node SEA packages for every platform and drafts a
+# GitHub Release. Every third-party action is pinned to a full commit SHA.
+#
+# LOCAL-VERIFICATION STATUS (be honest, per repo facts):
+#   - macOS arm64 (macos-14): package build + smoke-test are LOCALLY VERIFIED.
+#   - macOS x64, Windows x64, Linux x64, Linux arm64: PREPARED IN CI — NOT
+#     LOCALLY VERIFIED. These matrix legs are the first real proof they build.
+#   - Builds are UNSIGNED test builds (no code-signing secrets configured).
+
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+# Default to read-only; the release job opts into contents: write explicitly.
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Package (${{ matrix.label }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    # Build jobs only need to read the repo; the release job publishes.
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # macOS arm64 — LOCALLY VERIFIED reference build.
+          - os: macos-14
+            label: macOS-arm64
+            playwright_install: npx playwright install chromium
+          # macOS x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
+          - os: macos-13
+            label: macOS-x64
+            playwright_install: npx playwright install chromium
+          # Windows x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
+          - os: windows-latest
+            label: Windows-x64
+            playwright_install: npx playwright install chromium
+          # Linux x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
+          - os: ubuntu-22.04
+            label: Linux-x64
+            playwright_install: npx playwright install --with-deps chromium
+          # Linux arm64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
+          # NOTE: ubuntu-24.04-arm is a GitHub-hosted arm64 runner available to
+          # PUBLIC repositories. If it is unavailable for this account/repo,
+          # comment this entry out (or set it optional) — the other legs still
+          # produce a valid draft release.
+          - os: ubuntu-24.04-arm
+            label: Linux-arm64
+            playwright_install: npx playwright install --with-deps chromium
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Node
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # macOS: the SimpleX core dynamically links openssl@3.0. We must have the
+      # dylibs present so scripts/package-app.mjs can BUNDLE them into the .app
+      # (the binary stays pristine; the launcher sets DYLD_LIBRARY_PATH at spawn).
+      - name: Install openssl@3.0 (macOS only, needed to bundle dylibs)
+        if: runner.os == 'macOS'
+        run: brew install openssl@3.0
+
+      - name: Install dependencies (clean, from lockfile)
+        run: npm ci
+
+      - name: Build all workspaces
+        run: npm run build
+
+      # Download the pinned SimpleX core for THIS platform and verify SHA-256
+      # against the manifest BEFORE it is used or packaged.
+      - name: Download SimpleX core
+        run: node scripts/download-simplex.mjs
+
+      - name: Verify SimpleX core (sha256 + --version)
+        run: node scripts/verify-simplex.mjs
+
+      - name: Bundle launcher (esbuild)
+        run: npm run bundle:launcher
+
+      - name: Build SEA (single executable application)
+        run: node scripts/build-sea.mjs
+
+      - name: Assemble platform package
+        run: npm run package
+
+      # Smoke test drives real onboarding in Chromium and asserts the PACKAGED
+      # core creates an encrypted profile. Profile creation is LOCAL — no network
+      # or relay is required. On Linux we add --with-deps for system libraries.
+      - name: Install Playwright Chromium
+        run: ${{ matrix.playwright_install }}
+
+      - name: Smoke test packaged app
+        run: node tests/e2e/smoke-package.mjs
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: fwa-${{ matrix.label }}
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            dist-pkg/*.zip
+            dist-pkg/*.tar.gz
+            dist-pkg/*.sha256
+
+  release:
+    name: Draft GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Only this job publishes; it needs write access to create the release.
+    permissions:
+      contents: write
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          path: artifacts
+
+      - name: Collect packages & generate combined SHA256SUMS.txt
+        id: collect
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          # Flatten packages (zip/tar.gz) into release/, ignoring the per-file
+          # *.sha256 sidecars (we recompute a single combined manifest below).
+          find artifacts -type f \( -name '*.zip' -o -name '*.tar.gz' \) -exec cp -v {} release/ \;
+          cd release
+          if [ -z "$(ls -A 2>/dev/null)" ]; then
+            echo "::error::No packages were produced by the build matrix."
+            exit 1
+          fi
+          # sha256sum is available on ubuntu runners.
+          sha256sum * > SHA256SUMS.txt
+          echo "----- SHA256SUMS.txt -----"
+          cat SHA256SUMS.txt
+
+      # PREPARED IN CI — creates a DRAFT release only. It MUST NOT auto-publish.
+      # A human reviews the draft (and the UNSIGNED-build / not-locally-verified
+      # caveats) before publishing. prerelease is honored for v*-rc / -beta tags.
+      - name: Create draft release
+        uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974 # v2.1.0
+        with:
+          draft: true
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            release/*.zip
+            release/*.tar.gz
+            release/SHA256SUMS.txt
+        env:
+          # Minimal scope — the job-level contents: write is all that is granted.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

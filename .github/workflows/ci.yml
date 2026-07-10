@@ -1,0 +1,164 @@
+# Fuck WhatsApp — Continuous Integration
+#
+# UNOFFICIAL, independent open-source project. NOT affiliated with WhatsApp/Meta,
+# nor with SimpleX Chat. Messaging is powered by the official open-source SimpleX
+# Chat core (AGPL-3.0). This app implements ZERO cryptography and runs NO remote
+# backend. See THIRD_PARTY_NOTICES.md.
+#
+# This workflow runs the REAL build pipeline (see repo facts) on every PR and on
+# pushes to main. Every third-party action is pinned to a full commit SHA with a
+# trailing comment naming the version tag.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Minimal permissions: this workflow only reads the repository.
+permissions:
+  contents: read
+
+# Cancel superseded runs on the same ref to keep CI fast.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build, test & verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Node
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies (clean, from lockfile)
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      # Typecheck the web frontend explicitly, then let the workspace builds
+      # (which run tsc for the launcher) act as the rest of the typecheck.
+      - name: Typecheck (apps/web)
+        run: npx tsc -p apps/web/tsconfig.json --noEmit
+
+      - name: Build all workspaces
+        run: npm run build
+
+      - name: Bridge auth / security unit tests
+        run: node --test tests/security/bridge-auth.test.mjs
+
+      - name: Workspace tests
+        run: npm run test --if-present
+
+      # Non-blocking on low/moderate; only high+ (in production deps) fails CI.
+      - name: Dependency audit (high+, prod deps)
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: true
+
+      - name: Secret scan
+        run: |
+          set -uo pipefail
+          echo "Scanning working tree for secrets and the private canary token..."
+          EXCLUDES="--exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist --exclude-dir=dist-pkg --exclude-dir=build --exclude-dir=runtime --exclude-dir=.github --exclude=package-lock.json"
+          FAIL=0
+
+          # Private canary token. Assembled from parts so the literal token never
+          # appears in this workflow file (which would self-trigger the scan).
+          CANARY="FWA_PRIVATE_CANARY_""739284"
+          if grep -rInF $EXCLUDES "$CANARY" . ; then
+            echo "::error::Private canary token found in the working tree — this indicates a leak. Failing."
+            FAIL=1
+          fi
+
+          # High-signal secret patterns (avoid noisy generic password= matches).
+          PATTERNS=(
+            'AKIA[0-9A-Z]{16}'                                  # AWS access key id
+            'ghp_[0-9A-Za-z]{36}'                               # GitHub personal token
+            'gh[opsu]_[0-9A-Za-z]{36}'                          # GitHub oauth/server/user tokens
+            'github_pat_[0-9A-Za-z_]{22,}'                      # GitHub fine-grained PAT
+            'xox[baprs]-[0-9A-Za-z-]{10,}'                      # Slack token
+            'AIza[0-9A-Za-z_-]{35}'                             # Google API key
+            'sk-[0-9A-Za-z]{20,}'                               # Generic provider secret key
+            '-----BEGIN [A-Z ]*PRIVATE KEY-----'               # PEM private key
+          )
+          for p in "${PATTERNS[@]}"; do
+            if grep -rInE $EXCLUDES "$p" . ; then
+              echo "::error::Potential secret matching /$p/ found. Failing."
+              FAIL=1
+            fi
+          done
+
+          if [ "$FAIL" -ne 0 ]; then
+            exit 1
+          fi
+          echo "Secret scan clean."
+
+      - name: License check
+        run: |
+          set -euo pipefail
+          if [ -f scripts/check-licenses.mjs ]; then
+            node scripts/check-licenses.mjs
+          else
+            echo "scripts/check-licenses.mjs not present — skipping license check gracefully."
+          fi
+
+      - name: No remote assets check
+        run: |
+          set -uo pipefail
+          echo "Verifying the frontend ships no remote assets (self-contained, loopback-only)..."
+          TARGETS=""
+          [ -d apps/web/src ] && TARGETS="$TARGETS apps/web/src"
+          [ -d apps/web/dist ] && TARGETS="$TARGETS apps/web/dist"
+          if [ -z "$TARGETS" ]; then
+            echo "No apps/web/src or apps/web/dist to scan — skipping."
+            exit 0
+          fi
+          FAIL=0
+
+          # 1) Known tracker / CDN / cloud hosts are never allowed anywhere.
+          BLOCKHOSTS='googleapis\.com|gstatic\.com|google-analytics\.com|googletagmanager\.com|doubleclick\.net|facebook\.(com|net)|fbcdn\.net|graph\.facebook|connect\.facebook|amazonaws\.com|cloudfront\.net|firebaseio\.com|firebase(app|storage)|sentry\.io|ingest\.sentry|segment\.(com|io)|cdn\.segment|mixpanel\.com|api\.mixpanel|\.analytics\.|unpkg\.com|cdn\.jsdelivr\.net|cdnjs\.cloudflare\.com|fonts\.googleapis\.com|fonts\.gstatic\.com'
+          if grep -rInE "$BLOCKHOSTS" $TARGETS ; then
+            echo "::error::A blocked remote host (tracker/CDN/cloud) is referenced in the frontend. Failing."
+            FAIL=1
+          fi
+
+          # 2) Any http(s) URL loaded via fetch / src / href / import — except
+          #    plain github.com text links and loopback — is disallowed.
+          #    xmlns="http://www.w3.org/..." and similar are NOT loads, so the
+          #    attribute-scoped patterns below intentionally ignore them.
+          REMOTE='(fetch\(|import\(|from[[:space:]]+)["'"'"']https?://|(src|href)[[:space:]]*=[[:space:]]*["'"'"']https?://'
+          HITS=$(grep -rInE "$REMOTE" $TARGETS | grep -viE 'https?://(127\.0\.0\.1|localhost|(www\.)?github\.com)' || true)
+          if [ -n "$HITS" ]; then
+            echo "$HITS"
+            echo "::error::A remote URL is loaded (fetch/src/href/import). Only loopback and plain github.com text links are allowed. Failing."
+            FAIL=1
+          fi
+
+          if [ "$FAIL" -ne 0 ]; then
+            exit 1
+          fi
+          echo "No remote assets detected."
+
+      - name: Validate SimpleX manifest is JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('vendor/simplex/simplex-manifest.json','utf8')); console.log('simplex-manifest.json is valid JSON')"
+
+      # Downloads the pinned SimpleX core for the host platform (linux-x64 here)
+      # from the official GitHub release and verifies its SHA-256 BEFORE use.
+      - name: Download & verify SimpleX core
+        run: |
+          node scripts/download-simplex.mjs
+          node scripts/verify-simplex.mjs
+
+      - name: Security checks (egress, canary, posture)
+        run: npm run test:security

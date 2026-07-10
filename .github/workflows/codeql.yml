@@ -1,0 +1,51 @@
+# Fuck WhatsApp — CodeQL code scanning
+#
+# Static analysis for the JavaScript/TypeScript sources and the GitHub Actions
+# workflows themselves. Findings surface under the repository Security tab.
+# Every third-party action is pinned to a full commit SHA.
+
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, Mondays 07:17 UTC (off the top of the hour to avoid contention).
+    - cron: '17 7 * * 1'
+
+# Minimal permissions; security-events: write is required to upload results.
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        # 'javascript-typescript' covers apps/web + launcher + scripts/tests.
+        # 'actions' scans these workflow files (supported by CodeQL v3).
+        language: [javascript-typescript, actions]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@662472033e021d55d94146f66f6058822b0b39fd # v3.27.0
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@662472033e021d55d94146f66f6058822b0b39fd # v3.27.0
+        with:
+          category: /language:${{ matrix.language }}

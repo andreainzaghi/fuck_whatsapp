@@ -1,0 +1,34 @@
+{
+  "name": "fwa-chat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FUCK WHATSAPP — private chat over the official SimpleX Chat core. No phone. No email. No central account. No Meta.",
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "setup": "node scripts/download-simplex.mjs && node scripts/verify-simplex.mjs",
+    "verify": "node scripts/verify-simplex.mjs",
+    "dev": "node scripts/start-local.mjs --dev",
+    "build": "npm run build --workspaces --if-present",
+    "start": "node scripts/start-local.mjs",
+    "bundle:launcher": "node scripts/bundle-launcher.mjs",
+    "package": "node scripts/package-app.mjs",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "node tests/e2e/two-user.mjs",
+    "test:security": "node scripts/security-check.mjs && node tests/security/canary-scan.mjs",
+    "lint": "npm run lint --workspaces --if-present",
+    "licenses:check": "node scripts/check-licenses.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "playwright": "1.61.1",
+    "postject": "1.0.0-alpha.6"
+  }
+}

@@ -1,0 +1,402 @@
+/*
+ * Composer — sticky bottom bar: attach / auto-growing textarea / voice / send.
+ * Premium, quiet, WhatsApp-familiar. Tokens only (var(--fw-*)); px used only for
+ * one-off geometry. Reduced motion handled globally in tokens.css.
+ */
+
+.wrap {
+  flex: none;
+  position: sticky;
+  bottom: 0;
+  z-index: var(--fw-z-sticky);
+  background: var(--fw-surface-elevated);
+  border-top: 1px solid var(--fw-border);
+  padding: var(--fw-sp-2) var(--fw-sp-3);
+  padding-bottom: calc(var(--fw-sp-2) + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(var(--fw-sp-3) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--fw-sp-3) + env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-2);
+}
+
+/* Dimmed while the core socket is not open. */
+.disabled {
+  opacity: 0.72;
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--fw-sp-2);
+}
+
+/* ------------------------------------------------------------- buttons -- */
+
+.btn {
+  flex: none;
+  width: var(--fw-touch);
+  height: var(--fw-touch);
+  border-radius: var(--fw-radius-full);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fw-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background var(--fw-dur) var(--fw-ease),
+    color var(--fw-dur) var(--fw-ease),
+    transform var(--fw-dur-fast) var(--fw-ease);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  background: var(--fw-surface-hover);
+  color: var(--fw-text-primary);
+}
+
+.btn:active {
+  transform: scale(0.92);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn:disabled:hover {
+  background: transparent;
+  color: var(--fw-text-secondary);
+}
+
+/* Accent circular send — used for text and voice send. */
+.send {
+  background: var(--fw-accent);
+  border-color: var(--fw-accent);
+  color: var(--fw-accent-ink);
+}
+
+.send:hover {
+  background: var(--fw-accent-hover);
+  border-color: var(--fw-accent-hover);
+  color: var(--fw-accent-ink);
+}
+
+.send:disabled:hover {
+  background: var(--fw-accent);
+  color: var(--fw-accent-ink);
+}
+
+/* Stop-recording button reads as active/destructive. */
+.recStop {
+  background: var(--fw-danger-soft);
+  color: var(--fw-danger);
+}
+
+.recStop:hover {
+  background: var(--fw-danger-soft);
+  color: var(--fw-danger);
+}
+
+/* --------------------------------------------------------------- input -- */
+
+.textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--fw-touch);
+  max-height: 148px;
+  resize: none;
+  overflow-y: auto;
+  padding: 11px var(--fw-sp-4);
+  border-radius: var(--fw-radius-lg);
+  border: 1px solid var(--fw-border);
+  background: var(--fw-surface);
+  color: var(--fw-text-primary);
+  font-family: inherit;
+  font-size: calc(15px * var(--fw-font-scale));
+  line-height: 1.45;
+  transition:
+    border-color var(--fw-dur) var(--fw-ease),
+    background var(--fw-dur) var(--fw-ease);
+}
+
+.textarea::placeholder {
+  color: var(--fw-text-faint);
+}
+
+.textarea:hover {
+  border-color: var(--fw-border-strong);
+}
+
+.textarea:focus {
+  border-color: var(--fw-border-strong);
+}
+
+.textarea:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------- hints -- */
+
+.hint {
+  margin: 0;
+  font-size: calc(12px * var(--fw-font-scale));
+  color: var(--fw-text-secondary);
+  text-align: center;
+}
+
+.errorHint {
+  margin: 0;
+  font-size: calc(12px * var(--fw-font-scale));
+  color: var(--fw-danger);
+  text-align: center;
+}
+
+/* --------------------------------------------------------- voice states -- */
+
+.voiceRow {
+  display: flex;
+  align-items: center;
+  gap: var(--fw-sp-3);
+  min-height: var(--fw-touch);
+  padding-left: var(--fw-sp-1);
+}
+
+.recDot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-danger);
+  animation: fwa-rec-blink 1.1s ease-in-out infinite;
+}
+
+@keyframes fwa-rec-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.recTimer {
+  flex: none;
+  min-width: 44px;
+  font-size: calc(14px * var(--fw-font-scale));
+  font-weight: 600;
+  color: var(--fw-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Animated waveform — decorative CSS bars, no audio analyser. */
+.wave {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.waveBar {
+  flex: 1;
+  min-width: 2px;
+  max-width: 4px;
+  height: 100%;
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-accent);
+  transform: scaleY(0.28);
+  transform-origin: center;
+  animation: fwa-wave 0.9s ease-in-out infinite;
+}
+
+@keyframes fwa-wave {
+  0%,
+  100% {
+    transform: scaleY(0.28);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.previewPlayer {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ----------------------------------------------------------- drag drop -- */
+
+.dragOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fw-z-sheet);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--fw-sp-6);
+  background: var(--fw-scrim);
+  pointer-events: none;
+}
+
+.dragCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  padding: var(--fw-sp-6) var(--fw-sp-7);
+  border-radius: var(--fw-radius-lg);
+  border: 2px dashed var(--fw-accent);
+  background: var(--fw-surface-elevated);
+  color: var(--fw-text-primary);
+  box-shadow: var(--fw-shadow-menu);
+  font-size: calc(15px * var(--fw-font-scale));
+  font-weight: 600;
+}
+
+.dragCard span {
+  color: var(--fw-text-secondary);
+  font-weight: 400;
+  font-size: calc(13px * var(--fw-font-scale));
+}
+
+/* --------------------------------------------------------- attach sheet -- */
+
+.sheetScrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fw-z-sheet);
+  background: var(--fw-scrim);
+  animation: fwa-fade-in var(--fw-dur) var(--fw-ease);
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--fw-z-sheet);
+  background: var(--fw-surface-elevated);
+  border-top: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-lg) var(--fw-radius-lg) 0 0;
+  box-shadow: var(--fw-shadow-sheet);
+  padding: var(--fw-sp-4);
+  padding-bottom: calc(var(--fw-sp-5) + env(safe-area-inset-bottom, 0px));
+  animation: fwa-slide-up var(--fw-dur-slow) var(--fw-ease);
+}
+
+.sheetHandle {
+  width: 40px;
+  height: 4px;
+  margin: 0 auto var(--fw-sp-4);
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-border-strong);
+}
+
+.sheetGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--fw-sp-2);
+}
+
+.sheetItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  padding: var(--fw-sp-3) var(--fw-sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--fw-radius-md);
+  background: transparent;
+  color: var(--fw-text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: calc(12px * var(--fw-font-scale));
+  transition: background var(--fw-dur) var(--fw-ease);
+}
+
+.sheetItem:hover {
+  background: var(--fw-surface-hover);
+}
+
+.sheetIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--fw-radius-full);
+  background: var(--fw-accent-soft);
+  color: var(--fw-accent);
+}
+
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes fwa-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fwa-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+/* Desktop: attachment sheet becomes a compact popover above the attach button. */
+@media (min-width: 900px) {
+  .sheetScrim {
+    background: transparent;
+  }
+
+  .sheet {
+    left: calc(var(--fw-sp-3) + env(safe-area-inset-left, 0px));
+    right: auto;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    width: max-content;
+    border: 1px solid var(--fw-border);
+    border-radius: var(--fw-radius-md);
+    box-shadow: var(--fw-shadow-menu);
+    padding: var(--fw-sp-2);
+    animation: fwa-fade-in var(--fw-dur) var(--fw-ease);
+  }
+
+  .sheetHandle {
+    display: none;
+  }
+
+  .sheetGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fw-sp-1);
+  }
+
+  .sheetItem {
+    flex-direction: row;
+    gap: var(--fw-sp-3);
+    justify-content: flex-start;
+    padding: var(--fw-sp-2) var(--fw-sp-3);
+    min-width: 150px;
+  }
+
+  .sheetIcon {
+    width: 36px;
+    height: 36px;
+  }
+}

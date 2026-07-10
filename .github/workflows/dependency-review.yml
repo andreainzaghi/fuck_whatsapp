@@ -1,0 +1,35 @@
+# Fuck WhatsApp — Dependency Review
+#
+# On every pull request, review dependency changes: fail on high-severity
+# vulnerabilities and deny copyleft/unknown licenses that are incompatible with
+# how this project is distributed. The project itself is AGPL-3.0-only.
+# Every third-party action is pinned to a full commit SHA.
+
+name: Dependency Review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dep-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@4081bf99e2866ebe428fc0477b69eb4fcda7220a # v4.4.0
+        with:
+          fail-on-severity: high
+          # Deny licenses known to be problematic for redistribution here.
+          deny-licenses: GPL-2.0, LGPL-2.1, MS-PL, BUSL-1.1, SSPL-1.0
+          comment-summary-in-pr: on-failure

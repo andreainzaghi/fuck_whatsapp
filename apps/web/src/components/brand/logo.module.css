@@ -1,0 +1,34 @@
+.wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 0.92;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--fw-text-primary);
+}
+.wordmark.stacked .line {
+  font-size: clamp(40px, 12vw, 56px);
+  text-transform: uppercase;
+}
+.line {
+  display: block;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+.accent {
+  color: var(--fw-accent);
+}
+
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fw-sp-2);
+  color: var(--fw-text-primary);
+}
+.lockupText {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

@@ -1,0 +1,146 @@
+/* Shared UI primitives: icon button, avatar, toast, dialog. */
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border: 0;
+  background: none;
+  color: var(--fw-text-secondary);
+  cursor: pointer;
+  border-radius: var(--fw-radius-full);
+  transition: background var(--fw-dur-fast) var(--fw-ease), color var(--fw-dur-fast) var(--fw-ease);
+}
+.size-md {
+  width: var(--fw-touch);
+  height: var(--fw-touch);
+}
+.size-lg {
+  width: 52px;
+  height: 52px;
+}
+.iconBtn:hover:not(:disabled) {
+  background: var(--fw-surface-hover);
+  color: var(--fw-text-primary);
+}
+.iconBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.tone-accent {
+  color: var(--fw-accent-ink);
+  background: var(--fw-accent);
+}
+.tone-accent:hover:not(:disabled) {
+  background: var(--fw-accent-hover);
+  color: var(--fw-accent-ink);
+}
+.tone-danger {
+  color: var(--fw-danger);
+}
+.tone-danger:hover:not(:disabled) {
+  background: var(--fw-danger-soft);
+  color: var(--fw-danger);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: var(--fw-radius-full);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+/* toasts */
+.toastHost {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--fw-sp-6) + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: var(--fw-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fw-sp-2);
+  align-items: center;
+  pointer-events: none;
+  width: min(92vw, 420px);
+}
+.toast {
+  pointer-events: auto;
+  width: 100%;
+  border: 1px solid var(--fw-border);
+  background: var(--fw-surface-elevated);
+  color: var(--fw-text-primary);
+  border-radius: var(--fw-radius-md);
+  padding: var(--fw-sp-3) var(--fw-sp-4);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--fw-shadow-menu);
+  animation: fw-toast-in var(--fw-dur) var(--fw-ease);
+}
+.toast-success {
+  border-color: color-mix(in srgb, var(--fw-security) 50%, var(--fw-border));
+}
+.toast-danger {
+  border-color: color-mix(in srgb, var(--fw-danger) 50%, var(--fw-border));
+}
+@keyframes fw-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* dialog */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fw-z-modal);
+  background: var(--fw-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--fw-sp-4);
+  animation: fw-fade var(--fw-dur) var(--fw-ease);
+}
+.dialog {
+  width: min(92vw, 420px);
+  background: var(--fw-surface);
+  border: 1px solid var(--fw-border);
+  border-radius: var(--fw-radius-lg);
+  padding: var(--fw-sp-5);
+  box-shadow: var(--fw-shadow-menu);
+  animation: fw-pop var(--fw-dur) var(--fw-ease);
+}
+.dialogTitle {
+  margin: 0 0 var(--fw-sp-2);
+  font-size: 18px;
+  font-weight: 700;
+}
+.dialogBody {
+  margin: 0 0 var(--fw-sp-5);
+  color: var(--fw-text-secondary);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.dialogActions {
+  display: flex;
+  gap: var(--fw-sp-3);
+  justify-content: flex-end;
+}
+@keyframes fw-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fw-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

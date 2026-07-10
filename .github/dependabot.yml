@@ -1,0 +1,42 @@
+# Fuck WhatsApp — Dependabot configuration
+#
+# Weekly update checks for npm (root workspace lockfile) and the GitHub Actions
+# pinned in .github/workflows. Dependabot updates the pinned commit SHAs while
+# preserving the trailing version-tag comments.
+
+version: 2
+updates:
+  # npm — root package.json / package-lock.json (covers workspaces).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '07:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - npm
+    commit-message:
+      prefix: deps
+      include: scope
+    groups:
+      # Batch low-risk dev tooling into a single PR to reduce noise.
+      dev-dependencies:
+        dependency-type: development
+
+  # GitHub Actions — keeps SHA-pinned actions current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '07:00'
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: ci
