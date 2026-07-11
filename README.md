@@ -255,12 +255,14 @@ Only features that actually exist in this repository are listed.
 
 ### Experimental / not yet hardware-verified
 
-- [ ] **Windows x64, Linux x64/arm64, macOS x64** packages — *prepared in CI, not
-      yet verified on real hardware*
+- [ ] **Linux x64/arm64, macOS x64** packages — *built in CI, not yet verified on
+      real hardware*
 - [ ] Short videos — sent and received as files; no in-browser thumbnail yet
 
 ### Planned
 
+- [ ] **Windows x64** package — deferred from v0.1.0; the SEA build and the Windows
+      SimpleX runtime need verification on a real Windows host before we ship it
 - [ ] Signed and notarized macOS / Windows builds
 - [ ] Group conversations UI
 - [ ] Auto-update with signature verification
@@ -304,10 +306,12 @@ no remote images (everything is stored in this repository).
 
 > **Is there a download yet?** This project is at **v0.1.0 (early)**. If the
 > Releases page is empty, no build has been published yet — either check back
-> soon or [build it yourself](#build-from-source) (a few commands). Today only
-> the **macOS Apple Silicon** package has been tested on real hardware; the
-> others are built automatically but **not yet hardware-tested**. All current
-> builds are **unsigned** (see the first-launch notes below).
+> soon or [build it yourself](#build-from-source) (a few commands). This release
+> ships **macOS** (Apple Silicon + Intel) and **Linux** (x64 + arm64); a
+> **Windows** package is [deferred to a later release](#roadmap). Today only the
+> **macOS Apple Silicon** package has been tested on real hardware; the others
+> are built automatically but **not yet hardware-tested**. All current builds are
+> **unsigned** (see the first-launch notes below).
 
 ### 1 · Which file is for my computer?
 
@@ -317,9 +321,9 @@ Pick the row that matches your machine and download **that** file.
 | --- | --- |
 | 🍎 **Mac** with **Apple Silicon** (M1/M2/M3/M4 — most Macs since 2020) | `Fuck-WhatsApp-macOS-arm64.dmg` (or `.zip`) |
 | 🍎 **Mac** with an **Intel** processor (older Macs) | `Fuck-WhatsApp-macOS-x64.zip` |
-| 🪟 **Windows** PC (almost everyone) | `Fuck-WhatsApp-Windows-x64.zip` |
 | 🐧 **Linux** PC (normal desktop/laptop) | `Fuck-WhatsApp-Linux-x64.tar.gz` |
 | 🐧 **Linux** on ARM (Raspberry Pi, ARM boards) | `Fuck-WhatsApp-Linux-arm64.tar.gz` |
+| 🪟 **Windows** PC | *Not in this release — [coming soon](#roadmap).* You can still [build from source](#build-from-source) today. |
 
 <details>
 <summary><b>Not sure which one? Click here — 10-second check.</b></summary>
@@ -327,9 +331,8 @@ Pick the row that matches your machine and download **that** file.
 - **Mac:** click the **Apple menu () → About This Mac**. If it says **“Chip:
   Apple M…”** you have Apple Silicon → pick **arm64**. If it says **“Processor:
   Intel…”** → pick **Intel (x64)**.
-- **Windows:** almost every modern PC is **x64** — just pick the Windows file.
-  (To be sure: **Settings → System → About → System type**; “x64” = the Windows
-  file.)
+- **Windows:** a prebuilt package isn’t part of this release yet
+  ([roadmap](#roadmap)). Until then you can [build from source](#build-from-source).
 - **Linux:** open a terminal and run `uname -m`. `x86_64` → **x64**;
   `aarch64` → **arm64**.
 
@@ -344,9 +347,6 @@ This is expected for a new open-source app — you are not disabling any protect
   unzip the `.zip`). The first time, **right-click the app → Open → Open**.
   (Double-clicking the very first time may just show “unidentified developer” —
   right-click → Open gets past it.) Please **don’t** turn off Gatekeeper.
-- **🪟 Windows** — unzip the folder and run **Fuck WhatsApp.exe**. If SmartScreen
-  appears, click **More info → Run anyway**. Please **don’t** turn off
-  SmartScreen.
 - **🐧 Linux** — extract the `.tar.gz`, then run the `Fuck WhatsApp` file (make it
   executable first if needed: `chmod +x "Fuck WhatsApp"`).
 
@@ -363,11 +363,6 @@ value listed there — if they match, the file wasn’t tampered with.
 shasum -a 256 Fuck-WhatsApp-macOS-arm64.dmg
 ```
 
-```powershell
-# Windows (PowerShell)
-Get-FileHash .\Fuck-WhatsApp-Windows-x64.zip -Algorithm SHA256
-```
-
 If the fingerprint does **not** match the one in `SHA256SUMS.txt`, do not open the
 file.
 
@@ -378,7 +373,7 @@ file.
 For end users — **no terminal, no Node, no Docker, no separate SimpleX install.**
 
 1. **Download** the package for your OS and verify the checksum.
-2. **Launch** it (double-click on macOS/Windows; run the executable on Linux).
+2. **Launch** it (double-click on macOS; run the executable on Linux).
    Your browser opens automatically at `http://127.0.0.1:<random-port>`.
 3. **Create a local identity** — pick a display name.
 4. **Choose a strong database password.** It stays on your device and is never

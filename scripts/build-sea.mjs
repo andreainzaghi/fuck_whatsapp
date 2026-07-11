@@ -9,6 +9,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -76,18 +77,19 @@ if (process.platform === 'darwin') {
   }
 }
 
-// 5. inject the blob with postject
+// 5. inject the blob with postject — invoke its CLI through THIS node rather
+// than `npx` (execFileSync can't launch npx.cmd on Windows without a shell).
 console.log('• injecting SEA blob…');
-const postjectArgs = [
-  'postject',
-  exeOut,
-  'NODE_SEA_BLOB',
-  blob,
-  '--sentinel-fuse',
-  FUSE,
-];
+const require = createRequire(import.meta.url);
+const postjectPkgPath = require.resolve('postject/package.json');
+const postjectPkg = JSON.parse(readFileSync(postjectPkgPath, 'utf8'));
+const postjectBin = path.join(
+  path.dirname(postjectPkgPath),
+  typeof postjectPkg.bin === 'string' ? postjectPkg.bin : postjectPkg.bin.postject,
+);
+const postjectArgs = [postjectBin, exeOut, 'NODE_SEA_BLOB', blob, '--sentinel-fuse', FUSE];
 if (process.platform === 'darwin') postjectArgs.push('--macho-segment-name', 'NODE_SEA');
-run('npx', ['--yes', ...postjectArgs]);
+run(process.execPath, postjectArgs);
 
 // 6. (macOS) re-sign ad-hoc so the binary loads
 if (process.platform === 'darwin') {

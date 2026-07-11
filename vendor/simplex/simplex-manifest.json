@@ -36,7 +36,8 @@
       "size": 136907776,
       "provenance": "tofu-computed",
       "runtimeDeps": [],
-      "supported": true,
+      "supported": false,
+      "supportedNote": "DEFERRED — not shipped in v0.1.0. The SEA build/packaging and the Windows SimpleX runtime need verification on a real Windows host before we ship a build we can stand behind. Tracked in ROADMAP.md.",
       "locallyVerified": false
     },
     "linux-x64": {

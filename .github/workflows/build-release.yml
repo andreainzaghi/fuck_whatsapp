@@ -10,8 +10,9 @@
 #
 # LOCAL-VERIFICATION STATUS (be honest, per repo facts):
 #   - macOS arm64 (macos-14): package build + smoke-test are LOCALLY VERIFIED.
-#   - macOS x64, Windows x64, Linux x64, Linux arm64: PREPARED IN CI — NOT
-#     LOCALLY VERIFIED. These matrix legs are the first real proof they build.
+#   - macOS x64, Linux x64, Linux arm64: PREPARED IN CI — NOT LOCALLY VERIFIED.
+#     These matrix legs are the first real proof they build.
+#   - Windows x64: DEFERRED from v0.1.0 (matrix leg commented out below).
 #   - Builds are UNSIGNED test builds (no code-signing secrets configured).
 
 name: Build & Release
@@ -50,10 +51,13 @@ jobs:
           - os: macos-13
             label: macOS-x64
             playwright_install: npx playwright install chromium
-          # Windows x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
-          - os: windows-latest
-            label: Windows-x64
-            playwright_install: npx playwright install chromium
+          # Windows x64 — DEFERRED (not in v0.1.0). The SEA build/packaging and
+          # the Windows SimpleX runtime need verification on a real Windows host
+          # before we ship a build we can stand behind. Tracked in ROADMAP.md.
+          # Re-add this entry once verified:
+          #   - os: windows-latest
+          #     label: Windows-x64
+          #     playwright_install: npx playwright install chromium
           # Linux x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
           - os: ubuntu-22.04
             label: Linux-x64
