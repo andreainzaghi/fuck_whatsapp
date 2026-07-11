@@ -14,8 +14,9 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const launcherEntry = path.join(repoRoot, 'apps', 'launcher', 'dist', 'index.js');
 const shotsDir = path.join(repoRoot, 'test-results', 'ui-attachments');
 mkdirSync(shotsDir, { recursive: true });

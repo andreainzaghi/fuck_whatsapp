@@ -5,8 +5,9 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-export const repoRoot = path.resolve(new URL('..', import.meta.url).pathname);
+export const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 export const manifestPath = path.join(repoRoot, 'vendor', 'simplex', 'simplex-manifest.json');
 
 export function loadManifest() {

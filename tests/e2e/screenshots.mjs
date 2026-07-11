@@ -15,8 +15,9 @@ import { spawn } from 'node:child_process';
 import { mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const launcherEntry = path.join(repoRoot, 'apps', 'launcher', 'dist', 'index.js');
 const outDir = path.join(repoRoot, 'test-results', 'redesign');
 

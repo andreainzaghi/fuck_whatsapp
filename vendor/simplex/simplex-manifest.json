@@ -40,22 +40,22 @@
       "locallyVerified": false
     },
     "linux-x64": {
-      "asset": "simplex-chat-ubuntu-24_04-x86_64",
-      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-24_04-x86_64",
-      "sha256": "0aec0a1ebd35ec3dfbb9f969f5d58e4269c8eca236f5be096780b9465dda2dbe",
-      "size": 77241368,
+      "asset": "simplex-chat-ubuntu-22_04-x86_64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-22_04-x86_64",
+      "sha256": "eaa3106616a39acdca75b2312d56e41babb6ebca54204c943a992ec4b9461154",
+      "size": 77249592,
       "provenance": "official-signed-sha256sums",
-      "runtimeDeps": ["glibc (Ubuntu 24.04 build)"],
+      "runtimeDeps": ["glibc >= 2.35 (Ubuntu 22.04 build — runs on 22.04 and newer)"],
       "supported": true,
       "locallyVerified": false
     },
     "linux-arm64": {
-      "asset": "simplex-chat-ubuntu-24_04-aarch64",
-      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-24_04-aarch64",
-      "sha256": "b15166d89f9e964b425f451db81e4c07dce681a304255e92ee3deab5e211a410",
-      "size": 99940640,
+      "asset": "simplex-chat-ubuntu-22_04-aarch64",
+      "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v6.5.6/simplex-chat-ubuntu-22_04-aarch64",
+      "sha256": "e50f8b2e29636976d6b94fbea8d51e1be3fa77bf8627e848ffc5ecbec0b10a1a",
+      "size": 99883296,
       "provenance": "tofu-computed",
-      "runtimeDeps": ["glibc (Ubuntu 24.04 build)"],
+      "runtimeDeps": ["glibc >= 2.35 (Ubuntu 22.04 build — runs on 22.04 and newer)"],
       "supported": true,
       "locallyVerified": false
     }

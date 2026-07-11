@@ -11,8 +11,9 @@ import { execFileSync } from 'node:child_process';
 import { chmodSync, copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const buildDir = path.join(repoRoot, 'build');
 const bundle = path.join(buildDir, 'launcher.cjs');
 const blob = path.join(buildDir, 'sea-prep.blob');
