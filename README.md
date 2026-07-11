@@ -43,6 +43,16 @@ on the participating devices. The relays that carry your traffic move ciphertext
 > hardware-verified. Builds are currently **unsigned**. We say so plainly
 > throughout — no marketing, no absolute-security claims.
 
+<div align="center">
+
+### See it in action
+
+<img src="docs/assets/demo.gif" alt="Create an identity, share a one-time invitation, and chat — no phone number, no account." width="300">
+
+<sub>Real app, disposable test profiles. Create an identity → share a one-time invitation → chat. No phone number, no account, no sign-up.</sub>
+
+</div>
+
 ---
 
 ## Why this exists
