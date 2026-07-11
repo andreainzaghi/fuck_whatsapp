@@ -1,0 +1,15 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Report a security vulnerability (private)
+    url: https://github.com/andreainzaghi/fuck_whatsapp/security/advisories/new
+    about: >-
+      Do NOT open a public issue for an undisclosed vulnerability. Use GitHub
+      Private Vulnerability Reporting. See SECURITY.md.
+  - name: SimpleX core / protocol / relay issues
+    url: https://github.com/simplex-chat/simplex-chat/issues
+    about: >-
+      Cryptography, the SimpleX protocol, relays and the core CLI are the SimpleX
+      project's, not this project's. Report those upstream.
+  - name: Question or discussion
+    url: https://github.com/andreainzaghi/fuck_whatsapp/discussions
+    about: For usage questions and general discussion (if Discussions is enabled).

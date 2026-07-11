@@ -1,13 +1,13 @@
 /**
  * Sticky conversation header: back (mobile only, kept in DOM on desktop),
- * avatar, contact name, a discreet "Encrypted" control that opens a small
- * end-to-end-encryption explainer, and an overflow menu placeholder.
+ * avatar, contact name, and a discreet "Encrypted" control that opens a small
+ * end-to-end-encryption explainer.
  */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '../common/Avatar';
 import IconButton from '../common/IconButton';
-import { BackIcon, LockIcon, MoreIcon } from '../icons';
+import { BackIcon, LockIcon } from '../icons';
 import styles from './conversation.module.css';
 
 export default function ConversationHeader({
@@ -63,10 +63,6 @@ export default function ConversationHeader({
           Encrypted
         </button>
       </div>
-
-      <IconButton label="More options" onClick={() => undefined}>
-        <MoreIcon size={22} />
-      </IconButton>
 
       {secOpen ? (
         <>

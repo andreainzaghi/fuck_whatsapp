@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest a capability or improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Principle: **add capabilities, not surveillance.** Requests that add
+        tracking, analytics, remote assets, custom cryptography, a remote
+        backend, or a phone/email requirement are out of scope by design.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The user need, not just the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Does it respect the project principles?
+      options:
+        - label: No tracking / analytics / telemetry.
+          required: true
+        - label: No remote assets, fonts, CDNs, or new remote services.
+          required: true
+        - label: No custom cryptography; stays compatible with the SimpleX core.
+          required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered (optional)

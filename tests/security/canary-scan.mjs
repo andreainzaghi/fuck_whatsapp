@@ -12,7 +12,7 @@ import path from 'node:path';
 import process from 'node:process';
 
 const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
-const CANARY = ['FWA', 'PRIVATE', 'CANARY', '739284'].join('_');
+const CANARY = ['FWA', 'FINAL', 'SECRET', 'CANARY', '984721'].join('_');
 
 const SKIP_DIRS = new Set(['node_modules', '.git', 'dist', 'build', 'dist-pkg', 'playwright-report']);
 

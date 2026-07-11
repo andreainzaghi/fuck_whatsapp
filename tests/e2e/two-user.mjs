@@ -23,7 +23,7 @@ import { WebSocket } from 'ws';
 
 const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
 const launcherEntry = path.join(repoRoot, 'apps', 'launcher', 'dist', 'index.js');
-const CANARY = ['FWA', 'PRIVATE', 'CANARY', '739284'].join('_');
+const CANARY = ['FWA', 'FINAL', 'SECRET', 'CANARY', '984721'].join('_');
 const PASS_A = 'two-user-passphrase-A-1!';
 const PASS_B = 'two-user-passphrase-B-1!';
 

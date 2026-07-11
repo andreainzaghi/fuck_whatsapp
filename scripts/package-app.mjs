@@ -141,6 +141,25 @@ if (platform === 'darwin') {
   writeChecksums(zipStage);
   artifactPath = path.join(outRoot, `${pkgDirName}.zip`);
   run('ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', zipStage, artifactPath]);
+
+  // Also build a double-clickable .dmg (drag-to-Applications layout).
+  try {
+    const dmgStage = path.join(outRoot, 'dmg-stage');
+    rmSync(dmgStage, { recursive: true, force: true });
+    mkdirSync(dmgStage, { recursive: true });
+    cpSync(appDir, path.join(dmgStage, 'Fuck WhatsApp.app'), { recursive: true });
+    execFileSync('ln', ['-s', '/Applications', path.join(dmgStage, 'Applications')]);
+    if (existsSync(files.readme)) copyFileSync(files.readme, path.join(dmgStage, 'README-FIRST.txt'));
+    const dmgPath = path.join(outRoot, `${pkgDirName}.dmg`);
+    rmSync(dmgPath, { force: true });
+    run('hdiutil', ['create', '-volname', 'Fuck WhatsApp', '-srcfolder', dmgStage, '-ov', '-format', 'UDZO', '-quiet', dmgPath]);
+    rmSync(dmgStage, { recursive: true, force: true });
+    const dmgSum = sha256(dmgPath);
+    writeFileSync(`${dmgPath}.sha256`, `${dmgSum}  ${path.basename(dmgPath)}\n`);
+    console.log(`✓ ${path.relative(repoRoot, dmgPath)}\n  sha256: ${dmgSum}`);
+  } catch (e) {
+    console.warn(`! DMG build skipped (${e.message}); the .zip is the primary macOS artifact`);
+  }
 } else {
   // Linux / Windows portable directory
   const dirName = 'Fuck WhatsApp';

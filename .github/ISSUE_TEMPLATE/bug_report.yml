@@ -1,0 +1,66 @@
+name: Bug report
+description: Report a functional bug in the launcher, bridge, frontend, or packaging.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Do not include personal data**: no real message
+        content, contact names, invitation links, database passwords, or session
+        tokens. For a **security vulnerability**, use private reporting instead
+        (see SECURITY.md) — do not file it here.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: This is not a security vulnerability (those go through private reporting).
+          required: true
+        - label: This is not a SimpleX core/protocol/relay issue (those go upstream).
+          required: true
+        - label: I am on the latest release or `main`.
+          required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you run it?
+      options:
+        - Packaged build (.dmg / .zip / .tar.gz)
+        - Built from source (npm run dev / npm start)
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: OS and architecture
+      placeholder: e.g. macOS 15 arm64 / Windows 11 x64 / Ubuntu 24.04 x64
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      placeholder: e.g. v0.1.0 or a commit SHA
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs or error codes (optional)
+      description: Only the fixed-vocabulary event codes / error codes. Never paste message content, tokens, or passwords.
+      render: text

@@ -20,6 +20,7 @@
     "start": "node scripts/start-local.mjs",
     "bundle:launcher": "node scripts/bundle-launcher.mjs",
     "package": "node scripts/package-app.mjs",
+    "sbom": "node scripts/generate-sbom.mjs",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "node tests/e2e/two-user.mjs",
     "test:security": "node scripts/security-check.mjs && node tests/security/canary-scan.mjs",

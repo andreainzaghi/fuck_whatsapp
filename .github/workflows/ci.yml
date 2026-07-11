@@ -73,11 +73,13 @@ jobs:
           EXCLUDES="--exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist --exclude-dir=dist-pkg --exclude-dir=build --exclude-dir=runtime --exclude-dir=.github --exclude=package-lock.json"
           FAIL=0
 
-          # Private canary token. Assembled from parts so the literal token never
-          # appears in this workflow file (which would self-trigger the scan).
-          CANARY="FWA_PRIVATE_CANARY_""739284"
-          if grep -rInF $EXCLUDES "$CANARY" . ; then
-            echo "::error::Private canary token found in the working tree — this indicates a leak. Failing."
+          # Any FWA canary token that ever leaks into a tracked file is a bug.
+          # Match the family by pattern (tests assemble tokens from parts, so a
+          # full literal only appears if something actually leaked). The pattern
+          # itself is split so this workflow file never self-matches.
+          CANARY_RE="FWA_[A-Z_]*""CANARY_[0-9]{6}"
+          if grep -rInE $EXCLUDES "$CANARY_RE" . ; then
+            echo "::error::An FWA canary token was found in the working tree — this indicates a leak. Failing."
             FAIL=1
           fi
 
