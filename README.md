@@ -320,7 +320,7 @@ Pick the row that matches your machine and download **that** file.
 | Your computer | Download this file |
 | --- | --- |
 | 🍎 **Mac** with **Apple Silicon** (M1/M2/M3/M4 — most Macs since 2020) | `Fuck-WhatsApp-macOS-arm64.dmg` (or `.zip`) |
-| 🍎 **Mac** with an **Intel** processor (older Macs) | `Fuck-WhatsApp-macOS-x64.zip` |
+| 🍎 **Mac** with an **Intel** processor (older Macs) | `Fuck-WhatsApp-macOS-x64.dmg` (or `.zip`) |
 | 🐧 **Linux** PC (normal desktop/laptop) | `Fuck-WhatsApp-Linux-x64.tar.gz` |
 | 🐧 **Linux** on ARM (Raspberry Pi, ARM boards) | `Fuck-WhatsApp-Linux-arm64.tar.gz` |
 | 🪟 **Windows** PC | *Not in this release — [coming soon](#roadmap).* You can still [build from source](#build-from-source) today. |
