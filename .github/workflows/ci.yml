@@ -47,13 +47,14 @@ jobs:
       - name: Lint
         run: npm run lint --if-present
 
-      # Typecheck the web frontend explicitly, then let the workspace builds
-      # (which run tsc for the launcher) act as the rest of the typecheck.
-      - name: Typecheck (apps/web)
-        run: npx tsc -p apps/web/tsconfig.json --noEmit
-
+      # Build first so the workspace packages (e.g. @fwa/shared-types) emit their
+      # dist/ types; apps/web imports @fwa/shared-types by its built output, so
+      # the web typecheck must run AFTER the build.
       - name: Build all workspaces
         run: npm run build
+
+      - name: Typecheck (apps/web)
+        run: npx tsc -p apps/web/tsconfig.json --noEmit
 
       - name: Bridge auth / security unit tests
         run: node --test tests/security/bridge-auth.test.mjs

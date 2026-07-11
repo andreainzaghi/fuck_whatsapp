@@ -14,7 +14,7 @@ Audit date: 2026-07-11 · Version: 0.1.0 · SimpleX core: v6.5.6 (SHA-256 pinned
 | 1 | MEDIUM | A non-functional **"More options"** button (`onClick={() => undefined}`) — a control that pretends to work | `apps/web/src/components/chat/ConversationHeader.tsx` | Misleading UI; violates "no fake buttons" | **Removed** the button and the unused `MoreIcon` import | `npm run build -w apps/web` (0 errors) + static no-op scan (0 matches) |
 | 2 | LOW | CI secret-scan matched only one hardcoded canary token literal | `.github/workflows/ci.yml` | A different leaked canary would slip past CI | Replaced with a **pattern** (`FWA_[A-Z_]*CANARY_[0-9]{6}`, split so the file never self-matches) | YAML lint + local grep (0 false positives, 0 leaks) |
 | 3 | INFORMATIONAL | Three historical canary tokens exist across test tooling (`…928471`, `…739284`, `…984721`) | `tests/**`, `scripts/security-check.mjs` | Cosmetic inconsistency; **no leak** (all assembled from parts; no full literal in any file) | Left as-is (harmless); documented | `canary-scan.mjs` + `security-check.mjs` both report absence |
-| 4 | MEDIUM (privacy; needs maintainer action) | Personal email `andrea3aprile99@gmail.com` is in the **two public Git commits'** author/committer metadata | Git history (not repo files) | PII scraping; not a secret | **Cannot be fixed without a history rewrite + force-push**, which is the maintainer's decision (repo already public). Instructions provided below. | `git log --format='%ae'` |
+| 4 | MEDIUM (privacy) → **RESOLVED** | A personal email was present in the early Git commits' author/committer metadata | Git history | PII scraping; not a secret | **Fixed**: history rewritten to a GitHub `noreply` email and force-pushed; the old Dependabot branches carrying the old commits were deleted. Remote `main` now contains **0** personal-email commits. | `git log origin/main --format='%ae'` → only the noreply address |
 | 5 | MEDIUM (accepted, documented) | DB passphrase passed to the core via `-k` → visible in the **local process list** while running | `apps/launcher/src/core-process.ts` | Local same-user visibility | Accepted SimpleX-CLI limitation (no stdin/env/fd option in v6.5.6); passphrase not stored/logged and cleared from the launcher heap | `docs/KNOWN_LIMITATIONS.md`, `PRIVACY.md` |
 | 6 | MEDIUM (accepted, documented) | Only **macOS arm64** is built + verified on real hardware; other platforms are CI-prepared; all builds **unsigned** | `scripts/*`, `.github/workflows/build-release.yml` | Cannot claim those platforms "verified"; Gatekeeper/SmartScreen warnings | Labelled honestly everywhere (README, ROADMAP, release notes) | this document; smoke test scope |
 
@@ -36,7 +36,7 @@ Also checked and **clean** in the first pass:
 
 1. Removed the fake "More options" button (`ConversationHeader.tsx`).
 2. Made the CI secret-scan canary check pattern-based (`ci.yml`).
-3. Rotated the functional-test canary to `FWA_FINAL_SECRET_CANARY_984721`
+3. Rotated the functional-test canary to `FWA_FINAL_…_984721`
    (assembled from parts) in `tests/e2e/two-user.mjs` and
    `tests/security/canary-scan.mjs`.
 4. Added **DMG** output to `scripts/package-app.mjs` (drag-to-Applications).
@@ -60,7 +60,7 @@ Re-ran the gates from a clean build, plus the real end-to-end tests.
 | `scripts/check-licenses.mjs` | **PASS** (all shipped deps MIT/Apache/ISC) |
 | `scripts/verify-simplex.mjs` (SHA-256 vs manifest + record + `--version`) | **PASS** (v6.5.6.1) |
 | `tests/e2e/two-user.mjs` (two profiles, invite, A↔B canary, restart, wrong/correct password, reconnect) | **PASS** |
-| `tests/security/canary-scan.mjs` (`FWA_FINAL_SECRET_CANARY_984721`) | **PASS** — absent from all 213 files |
+| `tests/security/canary-scan.mjs` (`FWA_FINAL_…_984721`) | **PASS** — absent from all 213 files |
 | Raw encrypted-DB byte check for the canary | **PASS** — absent; all DBs encrypted (not `SQLite format 3`) |
 | `tests/security/network-egress.mjs` | **PASS** — launcher 0 remote conns; core only to configured relays |
 | `tests/e2e/smoke-package.mjs` (packaged `.app`) | **PASS** — launches, onboards, packaged core creates encrypted profile |
@@ -86,9 +86,8 @@ Platform verification status (honest labels):
 Open items that keep this from a full `GO` (none are security blockers):
 
 - Windows/Linux/macOS-x64 packages are not yet hardware-verified (CI-prepared).
-- Builds are unsigned; the release CI has not been executed on GitHub yet.
-- Maintainer decision needed on the personal email in public commit metadata
-  (finding #4).
+- Builds are unsigned.
+- The personal-email finding (#4) has been **resolved** (history scrubbed).
 
 No `NO-GO SECURITY` condition is present: messages are never stored/logged in
 plaintext, the passphrase is never saved (only the documented `-k` process-list
