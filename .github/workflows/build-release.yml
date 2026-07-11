@@ -128,6 +128,7 @@ jobs:
           path: |
             dist-pkg/*.zip
             dist-pkg/*.tar.gz
+            dist-pkg/*.dmg
             dist-pkg/*.sha256
 
   release:
@@ -151,7 +152,7 @@ jobs:
           mkdir -p release
           # Flatten packages (zip/tar.gz) into release/, ignoring the per-file
           # *.sha256 sidecars (we recompute a single combined manifest below).
-          find artifacts -type f \( -name '*.zip' -o -name '*.tar.gz' \) -exec cp -v {} release/ \;
+          find artifacts -type f \( -name '*.zip' -o -name '*.tar.gz' -o -name '*.dmg' \) -exec cp -v {} release/ \;
           cd release
           if [ -z "$(ls -A 2>/dev/null)" ]; then
             echo "::error::No packages were produced by the build matrix."
@@ -175,6 +176,7 @@ jobs:
           files: |
             release/*.zip
             release/*.tar.gz
+            release/*.dmg
             release/SHA256SUMS.txt
         env:
           # Minimal scope — the job-level contents: write is all that is granted.
