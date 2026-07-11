@@ -20,8 +20,9 @@ import { mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { WebSocket } from 'ws';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const launcherEntry = path.join(repoRoot, 'apps', 'launcher', 'dist', 'index.js');
 const CANARY = ['FWA', 'FINAL', 'SECRET', 'CANARY', '984721'].join('_');
 const PASS_A = 'two-user-passphrase-A-1!';

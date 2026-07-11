@@ -19,8 +19,9 @@ import { lookup } from 'node:dns/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { WebSocket } from 'ws';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const launcherEntry = path.join(repoRoot, 'apps', 'launcher', 'dist', 'index.js');
 const profileDir = path.join(repoRoot, 'runtime', 'profiles', 'egress-test');
 

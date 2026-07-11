@@ -8,8 +8,9 @@
 import { build } from 'esbuild';
 import { mkdirSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const out = path.join(repoRoot, 'build', 'launcher.cjs');
 mkdirSync(path.dirname(out), { recursive: true });
 

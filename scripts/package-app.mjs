@@ -17,8 +17,9 @@ import { createHash } from 'node:crypto';
 import { chmodSync, copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('..', import.meta.url));
 const buildDir = path.join(repoRoot, 'build');
 const outRoot = path.join(repoRoot, 'dist-pkg');
 const version = readFileSync(path.join(repoRoot, 'VERSION'), 'utf8').trim();

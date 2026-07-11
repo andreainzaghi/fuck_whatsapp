@@ -20,8 +20,9 @@ import { mkdirSync, rmSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { WebSocket } from 'ws';
+import { fileURLToPath } from 'node:url';
 
-const repoRoot = path.resolve(new URL('../..', import.meta.url).pathname);
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url));
 const CANARY = ['FWA_SUPER', 'SECRET', 'CANARY', '928471'].join('_');
 const PASS_A = 'canary-passphrase-A-31337!';
 const PASS_B = 'canary-passphrase-B-31337!';
