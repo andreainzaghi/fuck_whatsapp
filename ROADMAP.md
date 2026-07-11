@@ -13,8 +13,13 @@ Legend: **[done]** shipped · **[planned]** intended, not started or in progress
 - **[done]** Redesigned UI with light/dark themes and responsive layouts.
 - **[done]** Node **SEA** packaging (no Node/Docker/SimpleX for the user).
 - **[done]** macOS **arm64** package built and smoke-tested on local hardware.
-- **[done]** Other platform packages (Linux x64/arm64, macOS x64) **built in CI**
-  — not yet verified on real hardware.
+- **[done]** Linux **x64/arm64** packages **built in CI** — not yet verified on
+  real hardware.
+- **[deferred]** **macOS x64 (Intel)** package — pulled from v0.1.0. The package
+  builds, but GitHub's hosted `macos-13` (Intel) runners queue for 45+ min and
+  blocked the release. Re-add the `macos-13` leg in
+  `.github/workflows/build-release.yml` and flip `darwin-x64.supported` in
+  `vendor/simplex/simplex-manifest.json` once Intel runner availability is sane.
 - **[deferred]** **Windows x64** package — pulled from v0.1.0. The Node **SEA**
   build/packaging and the Windows SimpleX runtime need verification on a real
   Windows host before we ship a build we can stand behind. Re-add the

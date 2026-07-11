@@ -26,7 +26,8 @@
       "size": 79622792,
       "provenance": "tofu-computed",
       "runtimeDeps": ["openssl@3.0 — bundled into the macOS package"],
-      "supported": true,
+      "supported": false,
+      "supportedNote": "DEFERRED — not shipped in v0.1.0. The package builds, but GitHub's hosted macos-13 (Intel) runners queue for 45+ min and blocked the release. Re-add the macos-13 leg in .github/workflows/build-release.yml once Intel runner availability is sane. Tracked in ROADMAP.md.",
       "locallyVerified": false
     },
     "windows-x64": {
