@@ -10,8 +10,10 @@
 #
 # LOCAL-VERIFICATION STATUS (be honest, per repo facts):
 #   - macOS arm64 (macos-14): package build + smoke-test are LOCALLY VERIFIED.
-#   - macOS x64, Linux x64, Linux arm64: PREPARED IN CI — NOT LOCALLY VERIFIED.
-#     These matrix legs are the first real proof they build.
+#   - Linux x64, Linux arm64: PREPARED IN CI — NOT LOCALLY VERIFIED. These matrix
+#     legs are the first real proof they build.
+#   - macOS x64 (Intel): DEFERRED from v0.1.0 — hosted Intel runners queue for
+#     45+ min and blocked the release (matrix leg commented out below).
 #   - Windows x64: DEFERRED from v0.1.0 (matrix leg commented out below).
 #   - Builds are UNSIGNED test builds (no code-signing secrets configured).
 
@@ -29,7 +31,10 @@ permissions:
 
 concurrency:
   group: release-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  # Cancel a superseded run for the same tag. Re-cutting a tag (force-push) is our
+  # normal way to fix a release; without this, the new run deadlocks behind the
+  # old queued one (same group) and never starts.
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -47,10 +52,13 @@ jobs:
           - os: macos-14
             label: macOS-arm64
             playwright_install: npx playwright install chromium
-          # macOS x64 — PREPARED IN CI — NOT LOCALLY VERIFIED.
-          - os: macos-13
-            label: macOS-x64
-            playwright_install: npx playwright install chromium
+          # macOS x64 (Intel) — DEFERRED from v0.1.0. The package builds fine, but
+          # GitHub's hosted macos-13 (Intel) runners queue for a very long time
+          # (often 45+ min with no ETA) and were blocking the whole release. Ship
+          # the fast legs now; re-add this once Intel runner availability is sane:
+          #   - os: macos-13
+          #     label: macOS-x64
+          #     playwright_install: npx playwright install chromium
           # Windows x64 — DEFERRED (not in v0.1.0). The SEA build/packaging and
           # the Windows SimpleX runtime need verification on a real Windows host
           # before we ship a build we can stand behind. Tracked in ROADMAP.md.

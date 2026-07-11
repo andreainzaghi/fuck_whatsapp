@@ -307,11 +307,11 @@ no remote images (everything is stored in this repository).
 > **Is there a download yet?** This project is at **v0.1.0 (early)**. If the
 > Releases page is empty, no build has been published yet — either check back
 > soon or [build it yourself](#build-from-source) (a few commands). This release
-> ships **macOS** (Apple Silicon + Intel) and **Linux** (x64 + arm64); a
-> **Windows** package is [deferred to a later release](#roadmap). Today only the
-> **macOS Apple Silicon** package has been tested on real hardware; the others
-> are built automatically but **not yet hardware-tested**. All current builds are
-> **unsigned** (see the first-launch notes below).
+> ships **macOS Apple Silicon** and **Linux** (x64 + arm64); **Intel Macs** and
+> **Windows** are [deferred to a later release](#roadmap). Today only the
+> **macOS Apple Silicon** package has been tested on real hardware; the Linux
+> ones are built automatically but **not yet hardware-tested**. All current builds
+> are **unsigned** (see the first-launch notes below).
 
 ### 1 · Which file is for my computer?
 
@@ -320,9 +320,9 @@ Pick the row that matches your machine and download **that** file.
 | Your computer | Download this file |
 | --- | --- |
 | 🍎 **Mac** with **Apple Silicon** (M1/M2/M3/M4 — most Macs since 2020) | `Fuck-WhatsApp-macOS-arm64.dmg` (or `.zip`) |
-| 🍎 **Mac** with an **Intel** processor (older Macs) | `Fuck-WhatsApp-macOS-x64.dmg` (or `.zip`) |
 | 🐧 **Linux** PC (normal desktop/laptop) | `Fuck-WhatsApp-Linux-x64.tar.gz` |
 | 🐧 **Linux** on ARM (Raspberry Pi, ARM boards) | `Fuck-WhatsApp-Linux-arm64.tar.gz` |
+| 🍎 **Mac** with an **Intel** processor (pre‑2020) | *Not in this release — [coming soon](#roadmap).* You can still [build from source](#build-from-source) today. |
 | 🪟 **Windows** PC | *Not in this release — [coming soon](#roadmap).* You can still [build from source](#build-from-source) today. |
 
 <details>
@@ -330,7 +330,8 @@ Pick the row that matches your machine and download **that** file.
 
 - **Mac:** click the **Apple menu () → About This Mac**. If it says **“Chip:
   Apple M…”** you have Apple Silicon → pick **arm64**. If it says **“Processor:
-  Intel…”** → pick **Intel (x64)**.
+  Intel…”**, a prebuilt package isn’t part of this release yet
+  ([roadmap](#roadmap)) — you can [build from source](#build-from-source).
 - **Windows:** a prebuilt package isn’t part of this release yet
   ([roadmap](#roadmap)). Until then you can [build from source](#build-from-source).
 - **Linux:** open a terminal and run `uname -m`. `x86_64` → **x64**;
