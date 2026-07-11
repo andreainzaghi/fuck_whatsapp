@@ -16,7 +16,7 @@
     "setup": "node scripts/download-simplex.mjs && node scripts/verify-simplex.mjs",
     "verify": "node scripts/verify-simplex.mjs",
     "dev": "node scripts/start-local.mjs --dev",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build -w @fwa/shared-types && npm run build -w @fwa/simplex-bridge && npm run build -w @fwa/launcher && npm run build -w @fwa/web",
     "start": "node scripts/start-local.mjs",
     "bundle:launcher": "node scripts/bundle-launcher.mjs",
     "package": "node scripts/package-app.mjs",
