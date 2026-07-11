@@ -1,21 +1,26 @@
 <div align="center">
 
-# FUCK WHATSAPP
+<img src="docs/assets/banner.svg" alt="FUCK WHATSAPP — No phone. No email. No central account. No Meta." width="860">
 
-### No phone. No email. No central account. No Meta.
+# FUCK WHATSAPP
 
 **A local-first, open-source messaging app built on the [SimpleX](https://github.com/simplex-chat/simplex-chat) messaging protocol.**
 
 _Your messages. Your device. Your choice._
 
+**[⬇ Download](#download)** ·
 [Why this exists](#why-this-exists) ·
 [How it works](#how-it-works) ·
 [Features](#features) ·
-[Download](#download) ·
 [Security](#security) ·
 [Build from source](#build-from-source)
 
+[![CI](https://github.com/andreainzaghi/fuck_whatsapp/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/andreainzaghi/fuck_whatsapp/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/andreainzaghi/fuck_whatsapp/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/andreainzaghi/fuck_whatsapp/actions/workflows/codeql.yml)
+
 `AGPL-3.0` · `SimpleX Chat core v6.5.6` · `Local-first` · `No telemetry` · `v0.1.0 (early)`
+
+<sub>The badges above are served by GitHub itself — this README loads no third-party or tracking images.</sub>
 
 </div>
 
@@ -258,65 +263,94 @@ See [`ROADMAP.md`](ROADMAP.md) for the full list.
 
 ## Screenshots
 
-Real screenshots, captured with disposable test profiles (no personal data).
+Real screenshots, captured with disposable test profiles — no personal data,
+no remote images (everything is stored in this repository).
 
-| Onboarding | Chat list | Conversation |
-| --- | --- | --- |
-| ![Onboarding](docs/assets/screenshots/onboarding.png) | ![Chat list](docs/assets/screenshots/chat-list-mobile.png) | ![Conversation](docs/assets/screenshots/conversation-mobile.png) |
+**On your phone** — clean, familiar, dark by default:
 
-| Settings | Network | Desktop (light) |
-| --- | --- | --- |
-| ![Settings](docs/assets/screenshots/settings-mobile.png) | ![Network](docs/assets/screenshots/network-mobile.png) | ![Desktop, light theme](docs/assets/screenshots/conversation-desktop-light.png) |
+| Onboarding | Chat list | Conversation | Settings |
+| --- | --- | --- | --- |
+| <img src="docs/assets/screenshots/onboarding.png" width="200" alt="Onboarding"> | <img src="docs/assets/screenshots/chat-list-mobile.png" width="200" alt="Chat list"> | <img src="docs/assets/screenshots/conversation-mobile.png" width="200" alt="Conversation"> | <img src="docs/assets/screenshots/settings-mobile.png" width="200" alt="Settings"> |
+
+**On your desktop** — a real two-pane app, light or dark:
+
+| Chat list (desktop) | Conversation (light) |
+| --- | --- |
+| ![Desktop chat list](docs/assets/screenshots/chat-list-desktop.png) | ![Desktop conversation, light theme](docs/assets/screenshots/conversation-desktop-light.png) |
+
+| Network — your relays, replaceable | Light mode onboarding |
+| --- | --- |
+| ![Network settings](docs/assets/screenshots/network-desktop.png) | <img src="docs/assets/screenshots/onboarding-light.png" width="240" alt="Onboarding, light theme"> |
 
 ---
 
 ## Download
 
-Releases are published on the project's **GitHub Releases** page. Each release
-attaches per-platform packages plus a `SHA256SUMS.txt`.
+> ### 👉 Get it from the [**Releases page**](https://github.com/andreainzaghi/fuck_whatsapp/releases/latest)
+>
+> Open the latest release, scroll to **Assets**, and download the one file for
+> your computer (see the guide below). No account, no installer, no Node, no
+> setup — you download one file and open it.
 
-> **Honest status:** the release pipeline is wired up (a version tag triggers the
-> build workflow, which produces a **draft** release). If no release has been
-> published yet, [build from source](#build-from-source) — it is a few commands.
-> Today, only the **macOS Apple Silicon** package has been verified on real
-> hardware; the other platform packages are produced in CI and **not yet
-> hardware-verified**. All current builds are **unsigned test builds**.
+> **Is there a download yet?** This project is at **v0.1.0 (early)**. If the
+> Releases page is empty, no build has been published yet — either check back
+> soon or [build it yourself](#build-from-source) (a few commands). Today only
+> the **macOS Apple Silicon** package has been tested on real hardware; the
+> others are built automatically but **not yet hardware-tested**. All current
+> builds are **unsigned** (see the first-launch notes below).
 
-Expected package names:
+### 1 · Which file is for my computer?
 
-| Platform | Artifact |
+Pick the row that matches your machine and download **that** file.
+
+| Your computer | Download this file |
 | --- | --- |
-| macOS (Apple Silicon) | `Fuck-WhatsApp-macOS-arm64.zip` |
-| macOS (Intel) | `Fuck-WhatsApp-macOS-x64.zip` |
-| Windows x64 | `Fuck-WhatsApp-Windows-x64.zip` |
-| Linux x64 | `Fuck-WhatsApp-Linux-x64.tar.gz` |
-| Linux arm64 | `Fuck-WhatsApp-Linux-arm64.tar.gz` |
+| 🍎 **Mac** with **Apple Silicon** (M1/M2/M3/M4 — most Macs since 2020) | `Fuck-WhatsApp-macOS-arm64.dmg` (or `.zip`) |
+| 🍎 **Mac** with an **Intel** processor (older Macs) | `Fuck-WhatsApp-macOS-x64.zip` |
+| 🪟 **Windows** PC (almost everyone) | `Fuck-WhatsApp-Windows-x64.zip` |
+| 🐧 **Linux** PC (normal desktop/laptop) | `Fuck-WhatsApp-Linux-x64.tar.gz` |
+| 🐧 **Linux** on ARM (Raspberry Pi, ARM boards) | `Fuck-WhatsApp-Linux-arm64.tar.gz` |
 
-### macOS
+<details>
+<summary><b>Not sure which one? Click here — 10-second check.</b></summary>
 
-Download the Apple Silicon build and unzip it. Because current builds are
-**unsigned**, macOS may show a Gatekeeper warning the first time. After verifying
-the checksum, **right-click the app → Open → Open**. Do **not** disable Gatekeeper
-system-wide.
+- **Mac:** click the **Apple menu () → About This Mac**. If it says **“Chip:
+  Apple M…”** you have Apple Silicon → pick **arm64**. If it says **“Processor:
+  Intel…”** → pick **Intel (x64)**.
+- **Windows:** almost every modern PC is **x64** — just pick the Windows file.
+  (To be sure: **Settings → System → About → System type**; “x64” = the Windows
+  file.)
+- **Linux:** open a terminal and run `uname -m`. `x86_64` → **x64**;
+  `aarch64` → **arm64**.
 
-### Windows
+</details>
 
-Download the portable build and unzip it. Because current builds are unsigned,
-SmartScreen may warn on first run. After verifying the checksum, click
-**More info → Run anyway**. Do **not** disable SmartScreen.
+### 2 · Open it (first time)
 
-### Linux
+Because these are **unsigned test builds**, your system shows a one-time warning.
+This is expected for a new open-source app — you are not disabling any protection.
 
-Download the `.tar.gz`, extract it, and run the executable
-(`chmod +x` it first if needed).
+- **🍎 macOS** — open the `.dmg` and drag **Fuck WhatsApp** to Applications (or
+  unzip the `.zip`). The first time, **right-click the app → Open → Open**.
+  (Double-clicking the very first time may just show “unidentified developer” —
+  right-click → Open gets past it.) Please **don’t** turn off Gatekeeper.
+- **🪟 Windows** — unzip the folder and run **Fuck WhatsApp.exe**. If SmartScreen
+  appears, click **More info → Run anyway**. Please **don’t** turn off
+  SmartScreen.
+- **🐧 Linux** — extract the `.tar.gz`, then run the `Fuck WhatsApp` file (make it
+  executable first if needed: `chmod +x "Fuck WhatsApp"`).
 
-### Verify the checksum first
+Your browser opens by itself at `http://127.0.0.1` — that’s the app. Continue to
+the [Quick start](#quick-start).
 
-Compare the file's hash against the value in `SHA256SUMS.txt` on the release page.
+### 3 · (Recommended) Check the download is genuine
+
+Each release includes a `SHA256SUMS.txt`. Compare your file’s fingerprint to the
+value listed there — if they match, the file wasn’t tampered with.
 
 ```bash
-# macOS / Linux
-shasum -a 256 Fuck-WhatsApp-macOS-arm64.zip
+# macOS / Linux — run in the folder where you downloaded the file
+shasum -a 256 Fuck-WhatsApp-macOS-arm64.dmg
 ```
 
 ```powershell
@@ -324,7 +358,8 @@ shasum -a 256 Fuck-WhatsApp-macOS-arm64.zip
 Get-FileHash .\Fuck-WhatsApp-Windows-x64.zip -Algorithm SHA256
 ```
 
-If the hash does not match, do not run the file.
+If the fingerprint does **not** match the one in `SHA256SUMS.txt`, do not open the
+file.
 
 ---
 

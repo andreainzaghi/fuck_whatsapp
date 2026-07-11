@@ -33,8 +33,10 @@ jobs:
       fail-fast: false
       matrix:
         # 'javascript-typescript' covers apps/web + launcher + scripts/tests.
-        # 'actions' scans these workflow files (supported by CodeQL v3).
-        language: [javascript-typescript, actions]
+        # ('actions' workflow scanning was dropped: it fails to initialize on
+        # the current hosted CodeQL and adds little over the pinned-SHA actions
+        # + dependency-review already in place.)
+        language: [javascript-typescript]
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
