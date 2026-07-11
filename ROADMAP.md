@@ -13,8 +13,13 @@ Legend: **[done]** shipped · **[planned]** intended, not started or in progress
 - **[done]** Redesigned UI with light/dark themes and responsive layouts.
 - **[done]** Node **SEA** packaging (no Node/Docker/SimpleX for the user).
 - **[done]** macOS **arm64** package built and smoke-tested on local hardware.
-- **[done]** Other platform packages (Windows x64, Linux x64/arm64, macOS x64)
-  **prepared in CI** — not yet verified on real hardware.
+- **[done]** Other platform packages (Linux x64/arm64, macOS x64) **built in CI**
+  — not yet verified on real hardware.
+- **[deferred]** **Windows x64** package — pulled from v0.1.0. The Node **SEA**
+  build/packaging and the Windows SimpleX runtime need verification on a real
+  Windows host before we ship a build we can stand behind. Re-add the
+  `windows-latest` leg in `.github/workflows/build-release.yml` and flip
+  `windows-x64.supported` in `vendor/simplex/simplex-manifest.json` once verified.
 - **[done]** Hardened loopback bridge (auth, CSP, rate limit, no plaintext logs).
 - **[done]** Born-encrypted, fail-closed SQLCipher database.
 - **[done]** Community/product docs and tag-triggered draft-release CI.
@@ -24,8 +29,9 @@ Legend: **[done]** shipped · **[planned]** intended, not started or in progress
 ### Signing and distribution
 - **[planned]** Code-sign and **notarize** the macOS builds.
 - **[planned]** Code-sign the **Windows** builds (address SmartScreen warnings).
-- **[planned]** Verify the **Windows x64** and **Linux x64/arm64** packages on
-  real hardware (currently CI-prepared only).
+- **[planned]** Ship and verify the **Windows x64** package on a real Windows
+  host (deferred from v0.1.0), and verify the **Linux x64/arm64** packages on
+  real hardware (currently CI-built only).
 - **[planned]** Native installers: a macOS **DMG** and a Windows installer.
 
 ### Updates
